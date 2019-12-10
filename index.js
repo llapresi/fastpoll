@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const shortid = require('shortid');
-const { Poll, PollOption } = require('./models');
+const { PollController, VoteController } = require('./controllers');
 
 const app = express();
 const port = 3000;
@@ -11,26 +10,16 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('Hello Pointman!'));
 
-app.post('/polls', (req, res) => {
-  Poll.create({
-    name: req.body.name,
-    urlId: shortid.generate(),
-    endtime: Date.now() + req.body.endtime,
-    PollOptions: req.body.options,
-  }, {
-    include: [PollOption],
-  });
-  res.json('yeah');
-});
+// Poll API routes
+app.post('/polls', PollController.createPoll);
+// Return polls for id
+app.get('/polls/:id', PollController.findPollById);
+// Return all polls
+app.get('/polls/', PollController.getPolls);
 
-app.get('/polls/:id', (req, res) => {
-  Poll.findOne({
-    where: { urlId: req.params.id },
-    include: [PollOption],
-  }).then((poll) => {
-    res.json(poll);
-  });
-});
+// Vote API routes
+// Vote for a PollOption (using PollOption id)
+app.post('/vote', VoteController.makeVote);
 
 // app.get('/polls', (req, res) => {
 //     res.json(polls);
