@@ -3,7 +3,7 @@ const express = require('express');
 const { PollController, VoteController } = require('./controllers');
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 // use json
 app.use(express.json());
