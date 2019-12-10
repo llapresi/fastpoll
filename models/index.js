@@ -16,13 +16,10 @@ sequelize
 
 const Poll = require('./Poll')(sequelize, Sequelize);
 const PollOption = require('./PollOption')(sequelize, Sequelize);
-const PollVote = require('./PollVote')(sequelize, Sequelize);
 
-PollOption.belongsTo(Poll);
-PollVote.belongsTo(PollOption);
+Poll.hasMany(PollOption);
 
-sequelize.sync({force: true});
+sequelize.sync();
 
 module.exports.Poll = Poll;
 module.exports.PollOption = PollOption;
-module.exports.PollVote = PollVote;

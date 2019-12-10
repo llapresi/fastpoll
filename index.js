@@ -14,14 +14,22 @@ app.post('/polls', (req, res) => {
     Poll.create({
         name: req.body.name,
         urlId: shortid.generate(),
-        endtime: Date.now() + req.body.endtime
+        endtime: Date.now() + req.body.endtime,
+        PollOptions: req.body.options
+    },{
+        include: [PollOption]
     });
     res.json('yeah');
 });
 
-// app.get('/polls/:id', (req, res) => {
-//     Poll.findOrCreate({ where: {}})
-// });
+app.get('/polls/:id', (req, res) => {
+    Poll.findOne({
+        where: {urlId : req.params.id},
+        include: [PollOption]
+    }).then(poll => {
+        res.json(poll);
+    })
+});
 
 // app.get('/polls', (req, res) => {
 //     res.json(polls);
