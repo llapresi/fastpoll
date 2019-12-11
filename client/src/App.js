@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import HomePage from './Pages/HomePage';
 import PollPage from './Pages/PollPage';
+import CreatePollPage from './Pages/CreatePollPage';
 
 const AppContainer = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -25,6 +26,7 @@ function App() {
         <div>
           <Route exact path="/" component={HomePage} />
           <Route path="/poll/:pollId" component={PollPage} />
+          <Route path="/new" component={CreatePollPage} />
         </div>
       </Router>
     </AppContainer>
