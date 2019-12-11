@@ -11,15 +11,15 @@ app.use(express.json());
 app.get('/', (req, res) => res.send('Hello Pointman!'));
 
 // Poll API routes
-app.post('/polls', PollController.createPoll);
+app.post('/api/polls', PollController.createPoll);
 // Return polls for id
-app.get('/polls/:id', PollController.findPollById);
+app.get('/api/polls/:id', PollController.findPollById);
 // Return all polls
-app.get('/polls/', PollController.getPolls);
+app.get('/api/polls/', PollController.getPolls);
 
 // Vote API routes
 // Vote for a PollOption (using PollOption id)
-app.post('/vote', VoteController.makeVote);
+app.post('/api/vote', VoteController.makeVote);
 
 // app.get('/polls', (req, res) => {
 //     res.json(polls);

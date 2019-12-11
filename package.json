@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-server": "nodemon ./server.js",
     "dev-client": "cd client && npm start",
-    "dev": "concurrently \"npm:dev-*\""
+    "dev": "start npm run dev-server && start npm run dev-client"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +19,6 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
-    "concurrently": "^5.0.1",
     "eslint": "^6.7.2",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.19.1",
