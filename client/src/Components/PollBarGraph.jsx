@@ -27,7 +27,7 @@ const BarShading = styled.div`
   left: 0;
   height: 100%;
   width: ${(props) => props.width}%;
-  background-color: blue;
+  background-color: ${(props) => props.selected ? 'green' : 'blue'};
 `;
 
 const BarTitle = styled.h2`
@@ -47,15 +47,16 @@ const BarPercentage = styled.h3`
 `;
 
 // Displays bar graph
-const PollBarGraph = ({poll, callback}) => {
+const PollBarGraph = ({poll, callback, selected}) => {
   const { totalVotes } = poll;
   // Wrapped in terniary to prevent rendering undefined polloptions
   const optionList = poll.PollOptions ? poll.PollOptions.map((option) => {
     const { name, votes, id } = option;
     const percentage = Math.round((votes / totalVotes) * 100);
+    const isSelected = selected === id;
     return (
       <Bar votes={votes} totalVotes={totalVotes} onClick={() => callback(id)}>
-        <BarShading width={percentage} />
+        <BarShading width={percentage} selected={isSelected} />
         <BarFlexContainer>
           <BarTitle>{name}</BarTitle>
           {totalVotes !== 0 &&

@@ -46,7 +46,7 @@ const PollPage = ({match}) => {
     <div>
       <h1>{poll.name}</h1>
       <p>Total Votes: {poll.totalVotes}</p>
-      <PollBarGraph poll={poll} callback={setVote} />
+      <PollBarGraph poll={poll} selected={vote} callback={setVote} />
       <div>{votedForText}</div>
     </div>
   );
