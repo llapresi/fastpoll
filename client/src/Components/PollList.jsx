@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import VerticalList from '../Utilities/VerticalList';
+import {
+  Link
+} from "react-router-dom";
 
 const PollListItem = styled.div`
   background-color: #d6d6d6;
@@ -13,7 +16,9 @@ const PollListTitle = styled.h2`
 
 const PollListItemParent = ({item}) => (
   <PollListItem>
-    <PollListTitle>{item.name}</PollListTitle>
+    <Link to={`/poll/${item.urlId}`}>
+      <PollListTitle>{item.name}</PollListTitle>
+    </Link>
   </PollListItem>  
 );
 
@@ -28,7 +33,7 @@ const PollList = () => {
 
   const pollElements = [];
   for(let i = 0; i < polls.length; i++) {
-    const newElement = <PollListItemParent key={polls[i].urlId} item={polls[i]} />
+    const newElement = <PollListItemParent key={polls[i].urlId} item={polls[i]} />;
     pollElements.push(newElement);
   }
   return (
