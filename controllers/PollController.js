@@ -17,7 +17,8 @@ const createPoll = (req, res) => {
 const findPollById = (req, res) => {
   Poll.findOne({
     where: { urlId: req.params.id },
-    include: [PollOption],
+    attributes: ['id', 'name', 'urlId'],
+    include: [{ model: PollOption, attributes: ['id', 'name', 'votes'] }],
   })
     .then((poll) => {
       PollOption.sum('votes', { where: { PollId: poll.id } }).then((sum) => {
@@ -32,7 +33,9 @@ const findPollById = (req, res) => {
 
 // Return all polls
 const getPolls = (req, res) => {
-  Poll.findAll()
+  Poll.findAll({
+    attributes: ['id', 'name', 'urlId'],
+  })
     .then((polls) => res.json(polls))
     .catch((err) => res.json(err.message));
 };
