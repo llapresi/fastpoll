@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import VerticalList from '../Utilities/VerticalList';
+import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
 
 const Bar = styled.div`
   position: relative;
@@ -10,15 +11,11 @@ const Bar = styled.div`
   background-color: grey;
 `;
 
-const BarFlexContainer = styled.div`
+const BarFlexContainer = styled(SpaceBetweenRow)`
   box-sizing: border-box;
   position: absolute;
   height: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
   padding: 12px;
 `;
 

@@ -32,9 +32,7 @@ const findPollById = (req, res) => {
 
 // Return all polls
 const getPolls = (req, res) => {
-  Poll.findAll({
-    include: [PollOption],
-  })
+  Poll.findAll()
     .then((polls) => res.json(polls))
     .catch((err) => res.json(err.message));
 };
