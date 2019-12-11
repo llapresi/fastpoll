@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-server": "nodemon ./server.js",
+    "dev-server": "nodemon --ignore './client/ ./server.js",
     "dev-client": "cd client && npm start",
-    "dev": "start npm run dev-server && start npm run dev-client"
+    "dev": "concurrently \"npm:dev-*\""
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
+    "concurrently": "^5.0.1",
     "eslint": "^6.7.2",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.19.1",

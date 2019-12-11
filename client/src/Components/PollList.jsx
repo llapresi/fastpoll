@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 import VerticalList from '../Utilities/VerticalList';
-import {
-  Link
-} from "react-router-dom";
 
 const PollListItem = styled.div`
   background-color: #d6d6d6;
@@ -19,7 +17,7 @@ const PollListItemParent = ({item}) => (
     <Link to={`/poll/${item.urlId}`}>
       <PollListTitle>{item.name}</PollListTitle>
     </Link>
-  </PollListItem>  
+  </PollListItem>
 );
 
 
@@ -28,11 +26,11 @@ const PollList = () => {
   useEffect(() => {
     fetch('/api/polls')
       .then((res) => res.json())
-      .then((polls) => setPolls(polls));
+      .then((res) => setPolls(res));
   }, []);
 
   const pollElements = [];
-  for(let i = 0; i < polls.length; i++) {
+  for (let i = 0; i < polls.length; i += 1) {
     const newElement = <PollListItemParent key={polls[i].urlId} item={polls[i]} />;
     pollElements.push(newElement);
   }
@@ -42,6 +40,6 @@ const PollList = () => {
       <VerticalList spacing="16">{pollElements}</VerticalList>
     </div>
   );
-}
+};
 
 export default PollList;

@@ -1,9 +1,9 @@
 import React from 'react';
-import styled from '@emotion/styled'
+import styled from '@emotion/styled';
 import {
   BrowserRouter as Router,
   Route,
-} from "react-router-dom";
+} from 'react-router-dom';
 import HomePage from './Pages/HomePage';
 import PollPage from './Pages/PollPage';
 
@@ -23,8 +23,8 @@ function App() {
     <AppContainer>
       <Router>
         <div>
-          <Route exact path="/"  component={HomePage} />
-          <Route path="/poll/:pollId"  component={PollPage} />
+          <Route exact path="/" component={HomePage} />
+          <Route path="/poll/:pollId" component={PollPage} />
         </div>
       </Router>
     </AppContainer>

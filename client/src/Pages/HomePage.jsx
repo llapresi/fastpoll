@@ -7,6 +7,6 @@ const HomePage = () => (
     <p>Fastpoll is the easiest way to create a real-time poll.</p>
     <PollList />
   </div>
-)
+);
 
 export default HomePage;

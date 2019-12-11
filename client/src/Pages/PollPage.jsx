@@ -6,7 +6,7 @@ const PollPage = ({match}) => {
   useEffect(() => {
     fetch(`/api/polls/${match.params.pollId}`)
       .then((res) => res.json())
-      .then((poll) => setPoll(poll));
+      .then((results) => setPoll(results));
   }, []);
 
   console.log(match.params.pollId);
