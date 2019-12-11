@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import PollDisplay from '../Components/PollDisplay';
+import PollBarGraph from '../Components/PollBarGraph';
 
 const PollPage = ({match}) => {
+  // Hold our fetched poll in use state and use useEffect to load on mount
   const [poll, setPoll] = useState({});
   useEffect(() => {
-    fetch(`/api/polls/${match.params.pollId}`)
-      .then((res) => res.json())
-      .then((results) => setPoll(results));
+    const fetchData = async () => {
+      const res = await fetch(`/api/polls/${match.params.pollId}`);
+      const jsonRes = await res.json();
+      
+      setPoll(jsonRes);
+    }
+    fetchData();
   }, []);
-
-  console.log(match.params.pollId);
   return (
-    <PollDisplay poll={poll} />
+    <div>
+      <h1>{poll.name}</h1>
+      <p>Total Votes: {poll.totalVotes}</p>
+      <PollBarGraph poll={poll} />
+    </div>
   );
 };
 
