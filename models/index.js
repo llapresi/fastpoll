@@ -23,3 +23,4 @@ sequelize.sync();
 
 module.exports.Poll = Poll;
 module.exports.PollOption = PollOption;
+module.exports.db = sequelize;

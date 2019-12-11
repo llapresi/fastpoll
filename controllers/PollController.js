@@ -19,7 +19,14 @@ const findPollById = (req, res) => {
     where: { urlId: req.params.id },
     include: [PollOption],
   })
-    .then((poll) => res.json(poll));
+    .then((poll) => {
+      PollOption.sum('votes', { where: { PollId: poll.id } }).then((sum) => {
+        const jsonObj = JSON.parse(JSON.stringify(poll));
+        jsonObj.totalVotes = sum;
+        res.setHeader('content-type', 'application/json');
+        return res.send(jsonObj);
+      });
+    });
 };
 
 // Return all polls
