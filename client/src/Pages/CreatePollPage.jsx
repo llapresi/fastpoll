@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import VerticalList from '../Utilities/VerticalList';
 import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
 
@@ -52,18 +54,25 @@ const removeOption = (index, options, callback) => {
 };
 
 
-const OptionInput = ({ elm, onChange, onRemove }) => (
-  <div style={{display: 'flex'}}>
-    <OptionTextbox type="text" value={elm} onChange={onChange} />
+const OptionInput = ({ value, onChange, onRemove }) => (
+  <div style={{ display: 'flex' }}>
+    <OptionTextbox type="text" value={value} onChange={onChange} />
     <PollButton onClick={onRemove}>-</PollButton>
   </div>
 );
+
+OptionInput.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired,
+};
 
 const CreatePollPage = () => {
   const [options, setOptions] = useState(['first', 'second']);
   const [pollName, setPollName] = useState('New poll');
 
   const [shouldSubmit, setShouldSubmit] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState(null);
 
   useEffect(() => {
     if (shouldSubmit) {
@@ -84,14 +93,14 @@ const CreatePollPage = () => {
       })
         .then((res) => res.json())
         .then((res) => {
-          console.log(res);
+          setRedirectUrl(res.urlId);
         });
     }
   }, [shouldSubmit]);
 
   const inputElements = options.map((elm, index) => (
     <OptionInput
-      elm={elm}
+      value={elm}
       onChange={(e) => updateOption(index, options, e.target.value, setOptions)}
       onRemove={() => removeOption(index, options, setOptions)}
     />
@@ -109,6 +118,7 @@ const CreatePollPage = () => {
         <PollButton onClick={(() => addOption(options, setOptions))}>+ Add Option</PollButton>
         <PollButton onClick={(() => setShouldSubmit(true))}>Submit</PollButton>
       </SpaceBetweenRow>
+      {redirectUrl !== null ? <Redirect to={`/poll/${redirectUrl}`} /> : null }
     </VerticalList>
   );
 };

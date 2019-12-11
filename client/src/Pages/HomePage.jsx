@@ -1,6 +1,6 @@
 import React from 'react';
-import PollList from '../Components/PollList';
 import { Link } from 'react-router-dom';
+import PollList from '../Components/PollList';
 
 const HomePage = () => (
   <div>
