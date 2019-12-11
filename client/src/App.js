@@ -2,12 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled'
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Link
 } from "react-router-dom";
 import HomePage from './Pages/HomePage';
-import PollPage from './Pages/HomePage';
+import PollPage from './Pages/PollPage';
 
 const AppContainer = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -24,8 +22,10 @@ function App() {
   return (
     <AppContainer>
       <Router>
-        <Route path="/" exact component={HomePage} />
-        <Route path="/poll/:pollId" component={PollPage} />
+        <div>
+          <Route exact path="/"  component={HomePage} />
+          <Route path="/poll/:pollId"  component={PollPage} />
+        </div>
       </Router>
     </AppContainer>
   );
