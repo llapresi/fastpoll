@@ -24,8 +24,12 @@ const BarShading = styled.div`
   top: 0;
   left: 0;
   height: 100%;
-  width: ${(props) => props.width}%;
+  width: 100%;
+  transform-origin: top left;
+  transform: scale(${(props) => props.width / 100}, 1);
   background-color: ${(props) => (props.selected ? 'green' : 'blue')};
+  transition: transform 0.3s, background-color 0.2s;
+  transition-timing-function: ease-out;
 `;
 
 const BarTitle = styled.h2`
@@ -53,7 +57,7 @@ const PollBarGraph = ({ poll, callback, selected }) => {
     const percentage = Math.round((votes / totalVotes) * 100);
     const isSelected = selected === id;
     return (
-      <Bar votes={votes} totalVotes={totalVotes} onClick={() => callback(id)}>
+      <Bar key={id} votes={votes} totalVotes={totalVotes} onClick={() => callback(id)}>
         <BarShading width={percentage} selected={isSelected} />
         <BarFlexContainer>
           <BarTitle>{name}</BarTitle>

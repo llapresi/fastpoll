@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import PollBarGraph from '../Components/PollBarGraph';
 
@@ -23,7 +24,7 @@ const PollPage = ({ match }) => {
   // Submit poll vote
   useEffect(() => {
     // Vote = null is used as a 'toggle' to know when to run this command again
-    if (!hasVoted && vote !== null) {
+    if (hasVoted === false && vote !== null) {
       fetch('/api/vote/', {
         method: 'POST',
         headers: {
@@ -44,6 +45,7 @@ const PollPage = ({ match }) => {
 
   return (
     <div>
+      <h3><Link to="/">Back</Link></h3>
       <h1>{poll.name}</h1>
       <p>{`Total Votes: ${poll.totalVotes}`}</p>
       <PollBarGraph poll={poll} selected={vote} callback={setVote} />
