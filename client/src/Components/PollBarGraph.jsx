@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 import VerticalList from '../Utilities/VerticalList';
 
 const Bar = styled.div`
@@ -27,7 +28,7 @@ const BarShading = styled.div`
   left: 0;
   height: 100%;
   width: ${(props) => props.width}%;
-  background-color: ${(props) => props.selected ? 'green' : 'blue'};
+  background-color: ${(props) => (props.selected ? 'green' : 'blue')};
 `;
 
 const BarTitle = styled.h2`
@@ -47,10 +48,10 @@ const BarPercentage = styled.h3`
 `;
 
 // Displays bar graph
-const PollBarGraph = ({poll, callback, selected}) => {
-  const { totalVotes } = poll;
+const PollBarGraph = ({ poll, callback, selected }) => {
+  const { totalVotes, PollOptions } = poll;
   // Wrapped in terniary to prevent rendering undefined polloptions
-  const optionList = poll.PollOptions ? poll.PollOptions.map((option) => {
+  const optionList = PollOptions ? PollOptions.map((option) => {
     const { name, votes, id } = option;
     const percentage = Math.round((votes / totalVotes) * 100);
     const isSelected = selected === id;
@@ -59,12 +60,17 @@ const PollBarGraph = ({poll, callback, selected}) => {
         <BarShading width={percentage} selected={isSelected} />
         <BarFlexContainer>
           <BarTitle>{name}</BarTitle>
-          {totalVotes !== 0 &&
+          {totalVotes !== 0
+            && (
             <BarInfo>
-              <BarPercentage>{percentage}%</BarPercentage>
-              <span>{votes} Votes</span>
+              <BarPercentage>
+                {`${percentage}%`}
+              </BarPercentage>
+              <span>
+                {`${votes} Votes`}
+              </span>
             </BarInfo>
-          }
+            )}
         </BarFlexContainer>
       </Bar>
     );
@@ -74,6 +80,22 @@ const PollBarGraph = ({poll, callback, selected}) => {
       {optionList}
     </VerticalList>
   );
+};
+
+PollBarGraph.propTypes = {
+  poll: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    totalVotes: PropTypes.number.isRequired,
+    id: PropTypes.number.isRequired,
+    PollOptions: PropTypes.array.isRequired,
+  }).isRequired,
+  callback: PropTypes.func,
+  selected: PropTypes.number,
+};
+
+PollBarGraph.defaultProps = {
+  callback: null,
+  selected: null,
 };
 
 export default PollBarGraph;

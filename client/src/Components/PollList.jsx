@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import VerticalList from '../Utilities/VerticalList';
 
@@ -12,7 +13,7 @@ const PollListTitle = styled.h2`
   margin: 0;
 `;
 
-const PollListItemParent = ({item}) => (
+const PollListItemParent = ({ item }) => (
   <PollListItem>
     <Link to={`/poll/${item.urlId}`}>
       <PollListTitle>{item.name}</PollListTitle>
@@ -20,6 +21,12 @@ const PollListItemParent = ({item}) => (
   </PollListItem>
 );
 
+PollListItemParent.propTypes = {
+  item: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    urlId: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 const PollList = () => {
   const [polls, setPolls] = useState({});
