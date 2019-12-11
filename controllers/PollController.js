@@ -26,7 +26,8 @@ const findPollById = (req, res) => {
         res.setHeader('content-type', 'application/json');
         return res.send(jsonObj);
       });
-    });
+    })
+    .catch((err) => res.json(err.message));
 };
 
 // Return all polls
@@ -34,7 +35,8 @@ const getPolls = (req, res) => {
   Poll.findAll({
     include: [PollOption],
   })
-    .then((polls) => res.json(polls));
+    .then((polls) => res.json(polls))
+    .catch((err) => res.json(err.message));
 };
 
 module.exports.createPoll = createPoll;

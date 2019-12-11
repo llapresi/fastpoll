@@ -46,21 +46,24 @@ const BarPercentage = styled.h3`
   margin: 0px;
 `;
 
-const PollBarGraph = ({poll}) => {
+// Displays bar graph
+const PollBarGraph = ({poll, callback}) => {
   const { totalVotes } = poll;
   // Wrapped in terniary to prevent rendering undefined polloptions
   const optionList = poll.PollOptions ? poll.PollOptions.map((option) => {
-    const { name, votes } = option;
+    const { name, votes, id } = option;
     const percentage = Math.round((votes / totalVotes) * 100);
     return (
-      <Bar votes={votes} totalVotes={totalVotes}>
+      <Bar votes={votes} totalVotes={totalVotes} onClick={() => callback(id)}>
         <BarShading width={percentage} />
         <BarFlexContainer>
           <BarTitle>{name}</BarTitle>
-          <BarInfo>
-            <BarPercentage>{percentage}%</BarPercentage>
-            <span>{votes} Votes</span>
-          </BarInfo>
+          {totalVotes !== 0 &&
+            <BarInfo>
+              <BarPercentage>{percentage}%</BarPercentage>
+              <span>{votes} Votes</span>
+            </BarInfo>
+          }
         </BarFlexContainer>
       </Bar>
     );
