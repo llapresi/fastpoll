@@ -18,7 +18,22 @@ const PollPage = ({ match }) => {
 
   // Fetch our data on component mount
   useEffect(() => {
+    // Intiial call for data
     getData(`/api/polls/${match.params.pollId}`, setPoll);
+
+    // Start polling
+    let timer = 0;
+    const poll = () => {
+      getData(`/api/polls/${match.params.pollId}`, setPoll);
+      timer = setTimeout(poll, 1300);
+    };
+    timer = setTimeout(poll, 1300);
+
+    // Cancel polling on component exit
+    return () => { 
+      clearTimeout(timer);
+      timer = 0; 
+    }
   }, []);
 
   // Submit poll vote
