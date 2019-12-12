@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
 
@@ -76,6 +77,20 @@ const BarGraphBar = ({ option, totalVotes, selected }) => {
       </BarFlexContainer>
     </Bar>
   );
+};
+
+BarGraphBar.propTypes = {
+  option: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    votes: PropTypes.number.isRequired,
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+  totalVotes: PropTypes.number.isRequired,
+  selected: PropTypes.bool,
+};
+
+BarGraphBar.defaultProps = {
+  selected: false,
 };
 
 export default BarGraphBar;

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
 import { FetchMock } from '@react-mock/fetch';
 import { MemoryRouter } from 'react-router-dom';
-import PollPage from '../PollPage';
+import VotePage from '../VotePage';
 import { testPoll } from '../../Utilities/testData';
 
 // provided to PollPage component as mock poll id
@@ -21,7 +21,7 @@ test('fetches poll on component mount and renders correctly', async () => {
       ]}
     >
       <MemoryRouter>
-        <PollPage match={match} />
+        <VotePage match={match} />
       </MemoryRouter>
     </FetchMock>,
   );
@@ -41,7 +41,7 @@ test('Posts vote to server and renders response', async () => {
       ]}
     >
       <MemoryRouter>
-        <PollPage match={match} />
+        <VotePage match={match} />
       </MemoryRouter>
     </FetchMock>,
   );

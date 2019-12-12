@@ -7,7 +7,9 @@ import withOnClick from '../Utilities/withOnClick';
 const BarButton = withOnClick(BarGraphBar);
 
 // Displays bar graph
-const PollBarGraph = ({ poll, callback, selected, showResults }) => {
+const PollBarGraph = ({
+  poll, callback, selected, showResults,
+}) => {
   const { totalVotes, PollOptions } = poll;
   // Wrapped in terniary to prevent rendering undefined polloptions
   const optionList = PollOptions ? PollOptions.map((option, index) => (
