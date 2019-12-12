@@ -19,7 +19,7 @@ const OptionTextbox = styled(NameTextbox)`
   height: 80px;
   flex-grow: 1;
   min-width: 0px;
-  background-color: grey;
+  background-color: #d6d6d6;
   padding: 12px;
 `;
 
@@ -35,6 +35,7 @@ const PollHeader = styled.h2`
   margin: 0;
 `;
 
+// Functions used to update the array of poll options in the state
 const updateOption = (index, options, newVal, callback) => {
   const newArray = [...options];
   newArray[index] = newVal;
@@ -53,7 +54,7 @@ const removeOption = (index, options, callback) => {
   callback(newArray);
 };
 
-
+// Pairs a OptionTextbox and a PollButton for removal in one component
 const OptionInput = ({ value, onChange, onRemove }) => (
   <div style={{ display: 'flex' }}>
     <OptionTextbox type="text" value={value} onChange={onChange} />
@@ -68,10 +69,14 @@ OptionInput.propTypes = {
 };
 
 const CreatePollPage = () => {
+  // Stores name of our poll and our poll options
   const [options, setOptions] = useState(['first', 'second']);
   const [pollName, setPollName] = useState('New poll');
 
+  // When set to true, component makes POST to polls to make the new poll
   const [shouldSubmit, setShouldSubmit] = useState(false);
+
+  // Stores page to redirect to when our poll is submitted
   const [redirectUrl, setRedirectUrl] = useState(null);
 
   useEffect(() => {
@@ -98,6 +103,7 @@ const CreatePollPage = () => {
     }
   }, [shouldSubmit]);
 
+  // Create a textbox and button for each of our poll options
   const inputElements = options.map((elm, index) => (
     <OptionInput
       value={elm}

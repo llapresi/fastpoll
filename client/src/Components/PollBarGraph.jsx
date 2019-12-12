@@ -8,7 +8,13 @@ const Bar = styled.div`
   position: relative;
   height: 80px;
   width: 100%;
-  background-color: grey;
+  background-color: #d6d6d6;
+  transition: transform 0.13s;
+  transition-timing-function: ease-out;
+  
+  :hover {
+    transform: ${(props) => props.hover ? 'translateY(-4px)' : 'initial'};
+  }
 `;
 
 const BarFlexContainer = styled(SpaceBetweenRow)`
@@ -49,29 +55,37 @@ const BarPercentage = styled.h3`
 `;
 
 // Displays bar graph
-const PollBarGraph = ({ poll, callback, selected }) => {
+const PollBarGraph = ({ poll, callback, selected, hover }) => {
   const { totalVotes, PollOptions } = poll;
   // Wrapped in terniary to prevent rendering undefined polloptions
   const optionList = PollOptions ? PollOptions.map((option) => {
     const { name, votes, id } = option;
+    // Calc our percentage filled
     const percentage = Math.round((votes / totalVotes) * 100);
     const isSelected = selected === id;
+    // Create our bar info if we have more than 0 votes
+    const barInfo = (
+      <BarInfo>
+        <BarPercentage>
+          {`${percentage}%`}
+        </BarPercentage>
+        <span>
+          {`${votes} Votes`}
+        </span>
+      </BarInfo>
+    );
     return (
-      <Bar key={id} votes={votes} totalVotes={totalVotes} onClick={() => callback(id)}>
+      <Bar
+        hover={hover} 
+        key={id}
+        votes={votes}
+        totalVotes={totalVotes}
+        onClick={() => callback(id)}
+      >
         <BarShading width={percentage} selected={isSelected} />
         <BarFlexContainer>
           <BarTitle>{name}</BarTitle>
-          {totalVotes !== 0
-            && (
-            <BarInfo>
-              <BarPercentage>
-                {`${percentage}%`}
-              </BarPercentage>
-              <span>
-                {`${votes} Votes`}
-              </span>
-            </BarInfo>
-            )}
+          {totalVotes > 0 ? barInfo : null}
         </BarFlexContainer>
       </Bar>
     );
@@ -92,11 +106,13 @@ PollBarGraph.propTypes = {
   }).isRequired,
   callback: PropTypes.func,
   selected: PropTypes.number,
+  hover: PropTypes.bool
 };
 
 PollBarGraph.defaultProps = {
   callback: null,
   selected: null,
+  hover: false,
 };
 
 export default PollBarGraph;

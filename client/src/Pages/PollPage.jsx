@@ -29,7 +29,7 @@ const PollPage = ({ match }) => {
     };
     timer = setTimeout(poll, 1300);
 
-    // Cancel polling on component exit
+    // Cancel polling on component unmount
     return () => { 
       clearTimeout(timer);
       timer = 0; 
@@ -53,6 +53,7 @@ const PollPage = ({ match }) => {
           setHasVoted(true);
         })
         .then(() => {
+          // Poll for our data after we get confirmation that we voted from server
           getData(`/api/polls/${match.params.pollId}`, setPoll);
         });
     }
@@ -63,7 +64,7 @@ const PollPage = ({ match }) => {
       <h3><Link to="/">Back</Link></h3>
       <h1>{poll.name}</h1>
       <p>{`Total Votes: ${poll.totalVotes}`}</p>
-      <PollBarGraph poll={poll} selected={vote} callback={setVote} />
+      <PollBarGraph hover={vote === null} poll={poll} selected={vote} callback={setVote} />
       <div>{votedForText}</div>
     </div>
   );
