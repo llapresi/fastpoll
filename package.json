@@ -7,7 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-server": "nodemon ./server.js",
     "dev-client": "cd client && npm start",
-    "dev": "concurrently \"npm:dev-*\""
+    "dev": "concurrently \"npm:dev-*\"",
+    "start": "node ./server.js",
+    "heroku-prebuild": "cd client && npm install",
+    "build": "cd client && npm run build"
   },
   "nodemonConfig": {
     "ignore": ["client/*"]
