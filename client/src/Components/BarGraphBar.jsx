@@ -51,7 +51,7 @@ const Bar = styled.div`
 const BarGraphBar = ({ option, totalVotes, selected }) => {
   const { name, votes, id } = option;
   // Calc our percentage filled
-  const percentage = Math.round((votes / totalVotes) * 100);
+  const percentage = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
   // Create our bar info if we have more than 0 votes
   const barInfo = (
     <BarInfo>
