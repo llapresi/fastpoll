@@ -58,7 +58,7 @@ const removeOption = (index, options, callback) => {
 const OptionInput = ({ value, onChange, onRemove }) => (
   <div style={{ display: 'flex' }}>
     <OptionTextbox type="text" value={value} onChange={onChange} />
-    <PollButton onClick={onRemove}>-</PollButton>
+    <PollButton type="button" onClick={onRemove}>-</PollButton>
   </div>
 );
 
@@ -122,8 +122,8 @@ const CreatePollPage = () => {
         {inputElements}
       </VerticalList>
       <SpaceBetweenRow>
-        <PollButton onClick={(() => addOption(options, setOptions))}>+ Add Option</PollButton>
-        <PollButton onClick={(() => setShouldSubmit(true))}>Submit</PollButton>
+        <PollButton type="button" onClick={(() => addOption(options, setOptions))}>+ Add Option</PollButton>
+        <PollButton type="submit" onClick={(() => setShouldSubmit(true))}>Submit</PollButton>
       </SpaceBetweenRow>
       {redirectUrl !== null ? <Redirect to={`/poll/${redirectUrl}`} /> : null }
     </VerticalList>

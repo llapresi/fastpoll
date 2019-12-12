@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import PollBarGraph from '../Components/PollBarGraph';
+import BarGraph from '../Components/BarGraph';
 import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
 
 const getData = (url, callback) => {
@@ -15,7 +15,7 @@ const PollPage = ({ match }) => {
   const [poll, setPoll] = useState({});
   const [vote, setVote] = useState(null);
   const [hasVoted, setHasVoted] = useState(false);
-  const [votedForText, setVotedForText] = useState('Click an option to vote');
+  const [votedForText, setVotedForText] = useState(null);
 
   // Fetch our data on component mount
   useEffect(() => {
@@ -66,17 +66,17 @@ const PollPage = ({ match }) => {
       <h1>{poll.name}</h1>
       <SpaceBetweenRow>
         <p>{`Total Votes: ${poll.totalVotes}`}</p>
-        { hasVoted === false
-        && <button type="button" onClick={() => setHasVoted(true)}>Skip Voting and Show Results</button>}
+        { !hasVoted && <button type="button" onClick={() => setHasVoted(true)}>Skip Voting and Show Results</button>}
       </SpaceBetweenRow>
-      <PollBarGraph
+      <BarGraph
         hover={vote === null}
         poll={poll}
         selected={vote}
         callback={setVote}
         showResults={hasVoted}
       />
-      <div>{votedForText}</div>
+      {/* Show vote message if not voted and there isn't a reponse */}
+      <div>{votedForText === null && !hasVoted ? 'Click an option to vote' : votedForText}</div>
     </div>
   );
 };
