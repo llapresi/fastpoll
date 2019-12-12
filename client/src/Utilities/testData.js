@@ -31,3 +31,31 @@ export const testPoll = {
   ],
   "totalVotes": 20
 };
+
+export const testPollList = [
+    {
+        "id": 1,
+        "name": "Test poll",
+        "urlId": "IOaJCRM3"
+    },
+    {
+        "id": 2,
+        "name": "Best Front End Framework",
+        "urlId": "ShXJOiZH"
+    },
+    {
+        "id": 4,
+        "name": "Worst Poll",
+        "urlId": "wrqIB0T7"
+    },
+    {
+        "id": 6,
+        "name": "Are polls even that useful??",
+        "urlId": "fdf8D9D"
+    },
+    {
+        "id": 7,
+        "name": "Was this project scoped correctly?",
+        "urlId": "Xpajopht"
+    }
+];

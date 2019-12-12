@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-server": "nodemon --ignore './client/ ./server.js",
+    "dev-server": "nodemon ./server.js",
     "dev-client": "cd client && npm start",
     "dev": "concurrently \"npm:dev-*\""
+  },
+  "nodemonConfig": {
+    "ignore": ["client/*"]
   },
   "author": "",
   "license": "ISC",

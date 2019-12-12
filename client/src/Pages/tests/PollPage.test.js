@@ -2,8 +2,8 @@ import React from 'react';
 import { render, fireEvent, waitForElement  } from '@testing-library/react';
 import { FetchMock } from '@react-mock/fetch';
 import { MemoryRouter } from 'react-router-dom';
-import PollPage from './PollPage';
-import { testPoll } from '../Utilities/testData';
+import PollPage from '../PollPage';
+import { testPoll } from '../../Utilities/testData';
 
 // provided to PollPage component as mock poll id
 const match = {

@@ -101,6 +101,7 @@ const CreatePollPage = () => {
   const inputElements = options.map((elm, index) => (
     <OptionInput
       value={elm}
+      key={index}
       onChange={(e) => updateOption(index, options, e.target.value, setOptions)}
       onRemove={() => removeOption(index, options, setOptions)}
     />

@@ -2,11 +2,11 @@ import React from 'react';
 import styled from '@emotion/styled';
 import {
   BrowserRouter as Router,
-  Route,
 } from 'react-router-dom';
 import HomePage from './Pages/HomePage';
 import PollPage from './Pages/PollPage';
 import CreatePollPage from './Pages/CreatePollPage';
+import Routes from './Routes';
 
 const AppContainer = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -23,11 +23,7 @@ function App() {
   return (
     <AppContainer>
       <Router>
-        <div>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/poll/:pollId" component={PollPage} />
-          <Route path="/new" component={CreatePollPage} />
-        </div>
+        <Routes />
       </Router>
     </AppContainer>
   );
