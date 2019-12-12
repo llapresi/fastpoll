@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import VerticalList from '../Utilities/VerticalList';
 import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
 
@@ -114,6 +114,7 @@ const CreatePollPage = () => {
   ));
   return (
     <VerticalList spacing="12">
+      <h3><Link to="/">Back</Link></h3>
       <span>
         <PollHeader>Poll Name: </PollHeader>
         <NameTextbox type="text" value={pollName} onChange={(e) => setPollName(e.target.value)} />
