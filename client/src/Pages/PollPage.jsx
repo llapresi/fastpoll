@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import PollBarGraph from '../Components/PollBarGraph';
+import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
 
 const getData = (url, callback) => {
   fetch(url)
@@ -14,7 +15,7 @@ const PollPage = ({ match }) => {
   const [poll, setPoll] = useState({});
   const [vote, setVote] = useState(null);
   const [hasVoted, setHasVoted] = useState(false);
-  const [votedForText, setVotedForText] = useState('');
+  const [votedForText, setVotedForText] = useState('Click an option to vote');
 
   // Fetch our data on component mount
   useEffect(() => {
@@ -23,17 +24,17 @@ const PollPage = ({ match }) => {
 
     // Start polling
     let timer = 0;
-    const poll = () => {
+    const pollApi = () => {
       getData(`/api/polls/${match.params.pollId}`, setPoll);
-      timer = setTimeout(poll, 1300);
+      timer = setTimeout(pollApi, 1300);
     };
-    timer = setTimeout(poll, 1300);
+    timer = setTimeout(pollApi, 1300);
 
     // Cancel polling on component unmount
-    return () => { 
+    return () => {
       clearTimeout(timer);
-      timer = 0; 
-    }
+      timer = 0;
+    };
   }, []);
 
   // Submit poll vote
@@ -63,8 +64,18 @@ const PollPage = ({ match }) => {
     <div>
       <h3><Link to="/">Back</Link></h3>
       <h1>{poll.name}</h1>
-      <p>{`Total Votes: ${poll.totalVotes}`}</p>
-      <PollBarGraph hover={vote === null} poll={poll} selected={vote} callback={setVote} />
+      <SpaceBetweenRow>
+        <p>{`Total Votes: ${poll.totalVotes}`}</p>
+        { hasVoted === false
+        && <button type="button" onClick={() => setHasVoted(true)}>Skip Voting and Show Results</button>}
+      </SpaceBetweenRow>
+      <PollBarGraph
+        hover={vote === null}
+        poll={poll}
+        selected={vote}
+        callback={setVote}
+        showResults={hasVoted}
+      />
       <div>{votedForText}</div>
     </div>
   );
