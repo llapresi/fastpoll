@@ -3,9 +3,6 @@ import styled from '@emotion/styled';
 import {
   BrowserRouter as Router,
 } from 'react-router-dom';
-import HomePage from './Pages/HomePage';
-import PollPage from './Pages/PollPage';
-import CreatePollPage from './Pages/CreatePollPage';
 import Routes from './Routes';
 
 const AppContainer = styled.div`
