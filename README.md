@@ -17,5 +17,4 @@ Fastpoll is a web app that allows users to create realtime polls. Fastpoll utili
 
 * Styling is threadbare and minimal although it is responsive to mobile screens
 *	No system to prevent duplicate voting after refreshing the page. Currently this is so that testing is easier but event either an account or IP address way of preventing this will be implemented
-*	No form validation to stop users from making polls and options with empty names.
 * No unit/integration tests for REST server
