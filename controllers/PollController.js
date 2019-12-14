@@ -10,7 +10,8 @@ const createPoll = (req, res) => {
   }, {
     include: [PollOption],
   })
-    .then((poll) => res.json(poll));
+    .then((poll) => res.json(poll))
+    .catch((err) => res.status(400).json(err));
 };
 
 // Return polls for id
@@ -28,7 +29,7 @@ const findPollById = (req, res) => {
         return res.send(jsonObj);
       });
     })
-    .catch((err) => res.json(err.message));
+    .catch((err) => res.status(400).send(err.message));
 };
 
 // Return all polls
@@ -37,7 +38,7 @@ const getPolls = (req, res) => {
     attributes: ['id', 'name', 'urlId'],
   })
     .then((polls) => res.json(polls))
-    .catch((err) => res.json(err.message));
+    .catch((err) => res.status(400).json(err.message));
 };
 
 module.exports.createPoll = createPoll;

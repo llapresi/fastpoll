@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import VerticalList from '../Utilities/VerticalList';
 import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
+import handleErrors from '../Utilities/handleErrors';
 
 const NameTextbox = styled.input`
   height: auto;
@@ -79,6 +80,9 @@ const CreatePollPage = () => {
   // Stores page to redirect to when our poll is submitted
   const [redirectUrl, setRedirectUrl] = useState(null);
 
+  // Display error message:
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
     if (shouldSubmit) {
       const optionsObj = options.map((name) => (
@@ -96,9 +100,14 @@ const CreatePollPage = () => {
         },
         body: JSON.stringify(toSend),
       })
+        .then(handleErrors)
         .then((res) => res.json())
         .then((res) => {
           setRedirectUrl(res.urlId);
+        })
+        .catch((err) => { 
+          setErrorMessage(err.toString())
+          setShouldSubmit(false);
         });
     }
   }, [shouldSubmit]);
@@ -126,6 +135,9 @@ const CreatePollPage = () => {
         <PollButton type="button" onClick={(() => addOption(options, setOptions))}>+ Add Option</PollButton>
         <PollButton type="submit" onClick={(() => setShouldSubmit(true))}>Submit</PollButton>
       </SpaceBetweenRow>
+      <div>
+        {errorMessage}
+      </div>
       {redirectUrl !== null ? <Redirect to={`/poll/${redirectUrl}`} /> : null }
     </VerticalList>
   );
