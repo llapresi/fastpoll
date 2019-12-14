@@ -1,15 +1,18 @@
 const shortid = require('shortid');
-const { Poll, PollOption } = require('../models');
+const { Poll, PollOption, db } = require('../models');
 
 const createPoll = (req, res) => {
-  Poll.create({
-    name: req.body.name,
-    urlId: shortid.generate(),
-    endtime: Date.now() + (req.body.endtime * 1000),
-    PollOptions: req.body.options,
-  }, {
-    include: [PollOption],
-  })
+  db.transaction((t) => (
+    Poll.create({
+      name: req.body.name,
+      urlId: shortid.generate(),
+      endtime: Date.now() + (req.body.endtime * 1000),
+      PollOptions: req.body.options,
+    }, {
+      include: [PollOption],
+      transaction: t,
+    })
+  ))
     .then((poll) => res.json(poll))
     .catch((err) => res.status(400).json(err));
 };

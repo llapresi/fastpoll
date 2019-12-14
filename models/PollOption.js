@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: { args: true, msg: 'Option name cannot be empty' },
-        len: { args: [1, 30], msg: 'Option name max length is 30 characters' },
+        len: { args: [0, 30], msg: 'Option name max length is 30 characters' },
       },
       trim: true,
     },
