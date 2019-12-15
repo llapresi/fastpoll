@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
@@ -103,8 +105,8 @@ const CreatePollPage = () => {
         .then((res) => {
           setRedirectUrl(res.urlId);
         })
-        .catch((err) => { 
-          setErrorMessage(err.toString())
+        .catch((err) => {
+          setErrorMessage(err.toString());
           setShouldSubmit(false);
         });
     }

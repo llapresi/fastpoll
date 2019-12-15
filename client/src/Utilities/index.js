@@ -5,5 +5,5 @@ import SpaceBetweenRow from './SpaceBetweenRow';
 export {
   handleErrors,
   VerticalList,
-  SpaceBetweenRow
+  SpaceBetweenRow,
 };

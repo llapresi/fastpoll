@@ -5,5 +5,5 @@ import VotePage from './VotePage';
 export {
   HomePage,
   CreatePollPage,
-  VotePage
+  VotePage,
 };

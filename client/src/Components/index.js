@@ -5,5 +5,5 @@ import PollList from './PollList';
 export {
   GraphBar,
   PollForm,
-  PollList
+  PollList,
 };

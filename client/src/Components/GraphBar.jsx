@@ -33,7 +33,7 @@ const BarTitle = styled.h2`
 const BarInfo = styled.span`
   display: flex;
   flex-direction: column;
-  opacity: ${props => props.showResults ? '1' : '0'};
+  opacity: ${(props) => (props.showResults ? '1' : '0')};
   transition: opacity 0.7s;
   transition-timing-function: ease-out;
   transition-delay: ${(props) => props.delay}
@@ -53,7 +53,9 @@ const Bar = styled.div`
   transition-timing-function: ease-out;
 `;
 
-const GraphBar = ({ option, totalVotes, showResults, animationDelay }) => {
+const GraphBar = ({
+  option, totalVotes, showResults, animationDelay,
+}) => {
   const { name, votes, id } = option;
   // Calc our percentage filled
   const percentage = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
@@ -75,7 +77,7 @@ const GraphBar = ({ option, totalVotes, showResults, animationDelay }) => {
       totalVotes={totalVotes}
     >
       <BarShading width={showResults ? 100 : 0} color="#d5d5d5" delay={`${animationDelay}s`} />
-      <BarShading width={showResults ? percentage: 0} color="blue" delay={`${animationDelay + 0.1}s`} />
+      <BarShading width={showResults ? percentage : 0} color="blue" delay={`${animationDelay + 0.1}s`} />
       <BarFlexContainer>
         <BarTitle>{name}</BarTitle>
         {barInfo}
@@ -91,6 +93,13 @@ GraphBar.propTypes = {
     id: PropTypes.number.isRequired,
   }).isRequired,
   totalVotes: PropTypes.number.isRequired,
+  showResults: PropTypes.bool,
+  animationDelay: PropTypes.number,
+};
+
+GraphBar.defaultProps = {
+  showResults: true,
+  animationDelay: 0,
 };
 
 export default GraphBar;

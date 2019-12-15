@@ -72,7 +72,7 @@ const PollPage = ({ match }) => {
       <PollForm
         poll={poll}
         selected={vote}
-        onChange={(e) => setVote(parseInt(e.target.value))}
+        onChange={(e) => setVote(Number(e.target.value))}
         onSubmit={(e) => {
           setSubmit(true);
           e.preventDefault();
