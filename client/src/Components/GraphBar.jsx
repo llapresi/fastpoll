@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
+import { SpaceBetweenRow } from 'Utilities';
 
 const BarFlexContainer = styled(SpaceBetweenRow)`
   box-sizing: border-box;

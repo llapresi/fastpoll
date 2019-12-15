@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
-import VerticalList from '../Utilities/VerticalList';
-import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
-import handleErrors from '../Utilities/handleErrors';
+import { VerticalList, SpaceBetweenRow, handleErrors } from 'Utilities';
 
 const NameTextbox = styled.input`
   height: auto;

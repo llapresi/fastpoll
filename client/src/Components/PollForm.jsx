@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import VerticalList from '../Utilities/VerticalList';
-import GraphBar from './GraphBar';
+import { VerticalList } from 'Utilities';
+import { GraphBar}  from 'Components';
 
 const VoteButton = styled.input`
   display: block;

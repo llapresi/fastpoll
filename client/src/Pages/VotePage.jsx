@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
-import PollForm from '../Components/PollForm';
+import { SpaceBetweenRow } from 'Utilities';
+import { PollForm } from 'Components';
 
 const getData = (url, callback) => {
   fetch(url)
