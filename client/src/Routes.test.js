@@ -2,8 +2,8 @@ import React from 'react';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
 import { FetchMock } from '@react-mock/fetch';
 import { MemoryRouter } from 'react-router-dom';
+import { testPollList } from 'Utilities/testData';
 import Routes from './Routes';
-import { testPollList } from './Utilities/testData';
 
 test('navigates to route on click', async () => {
   // Setup mock callback

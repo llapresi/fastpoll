@@ -11,7 +11,7 @@ const VoteButton = styled.input`
   transition-timing-function: ease-in-out;
 `;
 
-const InputRow = styled.div`
+const InputRow = styled.label`
   display: flex;
   transform: ${(props) => (props.showResults ? 'translateX(-18px)' : 'inherit')};
   transition: transform 0.14s;
