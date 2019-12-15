@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import {
   BrowserRouter as Router,
 } from 'react-router-dom';
-import Routes from 'Routes';
+import Routes from './Routes';
 
 const AppContainer = styled.div`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
