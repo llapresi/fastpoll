@@ -58,6 +58,8 @@ const PollPage = ({ match }) => {
           // Poll for our data after we get confirmation that we voted from server
           getData(`/api/polls/${match.params.pollId}`, setPoll);
         });
+    } else {
+      setSubmit(false);
     }
   }, [submit]);
 

@@ -72,7 +72,7 @@ const PollForm = ({
     <form>
       <VerticalList spacing="12">
         {optionList}
-        {!showResults && <button type="submit" onClick={onSubmit}>Vote</button>}
+        {!showResults && <button type="submit" onClick={onSubmit} disabled={selected === null}>Vote</button>}
       </VerticalList>
     </form>
   );
