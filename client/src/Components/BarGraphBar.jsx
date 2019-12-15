@@ -19,9 +19,10 @@ const BarShading = styled.div`
   width: 100%;
   transform-origin: top left;
   transform: scale(${(props) => props.width / 100}, 1);
-  background-color: ${(props) => (props.selected ? 'green' : 'blue')};
+  background-color: ${(props) => props.color};
   transition: transform 0.3s, background-color 0.2s;
   transition-timing-function: ease-out;
+  transition-delay: ${(props) => props.delay}
 `;
 
 const BarTitle = styled.h2`
@@ -32,6 +33,10 @@ const BarTitle = styled.h2`
 const BarInfo = styled.span`
   display: flex;
   flex-direction: column;
+  opacity: ${props => props.showResults ? '1' : '0'};
+  transition: opacity 0.7s;
+  transition-timing-function: ease-out;
+  transition-delay: ${(props) => props.delay}
 `;
 
 const BarPercentage = styled.h3`
@@ -44,18 +49,17 @@ const Bar = styled.div`
   position: relative;
   height: 80px;
   width: 100%;
-  background-color: #d6d6d6;
   transition: transform 0.13s;
   transition-timing-function: ease-out;
 `;
 
-const BarGraphBar = ({ option, totalVotes, selected }) => {
+const BarGraphBar = ({ option, totalVotes, showResults, animationDelay }) => {
   const { name, votes, id } = option;
   // Calc our percentage filled
   const percentage = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
   // Create our bar info if we have more than 0 votes
   const barInfo = (
-    <BarInfo>
+    <BarInfo showResults={showResults} delay={`${animationDelay}s`}>
       <BarPercentage>
         {`${percentage}%`}
       </BarPercentage>
@@ -70,10 +74,11 @@ const BarGraphBar = ({ option, totalVotes, selected }) => {
       votes={votes}
       totalVotes={totalVotes}
     >
-      <BarShading width={percentage} selected={selected} />
+      <BarShading width={showResults ? 100 : 0} color="#d5d5d5" delay={`${animationDelay}s`} />
+      <BarShading width={showResults ? percentage: 0} color="blue" delay={`${animationDelay + 0.1}s`} />
       <BarFlexContainer>
         <BarTitle>{name}</BarTitle>
-        {totalVotes > 0 ? barInfo : null}
+        {barInfo}
       </BarFlexContainer>
     </Bar>
   );
@@ -86,11 +91,6 @@ BarGraphBar.propTypes = {
     id: PropTypes.number.isRequired,
   }).isRequired,
   totalVotes: PropTypes.number.isRequired,
-  selected: PropTypes.bool,
-};
-
-BarGraphBar.defaultProps = {
-  selected: false,
 };
 
 export default BarGraphBar;

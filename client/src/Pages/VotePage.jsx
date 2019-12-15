@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import BarGraph from '../Components/BarGraph';
 import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
+import PollForm from '../Components/PollForm';
 
 const getData = (url, callback) => {
   fetch(url)
@@ -14,6 +15,7 @@ const PollPage = ({ match }) => {
   // Hold our fetched poll in use state and use useEffect to load on mount
   const [poll, setPoll] = useState({});
   const [vote, setVote] = useState(null);
+  const [submit, setSubmit] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
   const [votedForText, setVotedForText] = useState(null);
 
@@ -58,7 +60,7 @@ const PollPage = ({ match }) => {
           getData(`/api/polls/${match.params.pollId}`, setPoll);
         });
     }
-  }, [vote]);
+  }, [submit]);
 
   return (
     <div>
@@ -68,15 +70,18 @@ const PollPage = ({ match }) => {
         <p>{`Total Votes: ${poll.totalVotes}`}</p>
         { !hasVoted && <button type="button" onClick={() => setHasVoted(true)}>Skip Voting and Show Results</button>}
       </SpaceBetweenRow>
-      <BarGraph
-        hover={vote === null}
+      <PollForm
         poll={poll}
         selected={vote}
-        callback={setVote}
+        onChange={(e) => setVote(parseInt(e.target.value))}
+        onSubmit={(e) => {
+          setSubmit(true);
+          e.preventDefault();
+        }}
         showResults={hasVoted}
       />
       {/* Show vote message if not voted and there isn't a reponse */}
-      <div>{votedForText === null && !hasVoted ? 'Click an option to vote' : votedForText}</div>
+      <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
     </div>
   );
 };
