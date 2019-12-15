@@ -53,7 +53,7 @@ const Bar = styled.div`
   transition-timing-function: ease-out;
 `;
 
-const BarGraphBar = ({ option, totalVotes, showResults, animationDelay }) => {
+const GraphBar = ({ option, totalVotes, showResults, animationDelay }) => {
   const { name, votes, id } = option;
   // Calc our percentage filled
   const percentage = totalVotes > 0 ? Math.round((votes / totalVotes) * 100) : 0;
@@ -84,7 +84,7 @@ const BarGraphBar = ({ option, totalVotes, showResults, animationDelay }) => {
   );
 };
 
-BarGraphBar.propTypes = {
+GraphBar.propTypes = {
   option: PropTypes.shape({
     name: PropTypes.string.isRequired,
     votes: PropTypes.number.isRequired,
@@ -93,4 +93,4 @@ BarGraphBar.propTypes = {
   totalVotes: PropTypes.number.isRequired,
 };
 
-export default BarGraphBar;
+export default GraphBar;

@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import VerticalList from '../Utilities/VerticalList';
-import BarGraphBar from './BarGraphBar';
-import withOnClick from '../Utilities/withOnClick';
+import GraphBar from './GraphBar';
 
 const VoteButton = styled.input`
   display: block;
@@ -29,7 +28,7 @@ const PollInput = ({option, totalVotes, showResults, checked, onChange}) => (
       checked={checked}
       showResults={showResults}
     />
-    <BarGraphBar animationDelay={0.16} option={option} totalVotes={totalVotes} showResults={showResults} />
+    <GraphBar animationDelay={0.16} option={option} totalVotes={totalVotes} showResults={showResults} />
   </InputRow>
 );
 

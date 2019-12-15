@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import BarGraph from '../Components/BarGraph';
 import SpaceBetweenRow from '../Utilities/SpaceBetweenRow';
 import PollForm from '../Components/PollForm';
 
