@@ -23,10 +23,15 @@ const BarShading = styled.div`
   transform-origin: top left;
   transform: scale(${(props) => props.width / 100}, 1);
   background-color: ${(props) => props.color};
-  transition: transform 0.3s, background-color 0.2s;
   transition-timing-function: ease-out;
   transition-delay: ${(props) => props.delay};
-  will-change: transform;
+  will-change: transform, box-shadow;
+  box-shadow: ${(props) => {
+    const opacity = props.focused ? 0.18 : 0;
+    return `inset 0 3px 30px rgba(0,0,0, ${opacity}), inset 0 3px 8px rgba(0,0,0, ${opacity})`;
+  }};
+  transition: transform 0.3s, background-color 0.2s, box-shadow 0.13s ease-out;
+
 `;
 
 const BarSelectedShading = styled(BarShading)`
@@ -42,6 +47,7 @@ const BarTitle = styled.h2`
 const BarInfo = styled.span`
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   opacity: ${(props) => (props.showResults ? '1' : '0')};
   transition: opacity 0.7s;
   transition-timing-function: ease-out;
@@ -75,7 +81,7 @@ const Bar = styled.div`
 `;
 
 const GraphBar = ({
-  option, totalVotes, showResults, animationDelay, selected,
+  option, totalVotes, showResults, animationDelay, selected, focused,
 }) => {
   const { name, votes, id } = option;
   // Calc our percentage filled
@@ -99,8 +105,8 @@ const GraphBar = ({
       selected={selected}
       showResults={showResults}
     >
-      <BarShading width={100} color="#d5d5d5" />
-      <BarShading width={showResults ? percentage : 0} color="blue" delay={`${animationDelay}s`} />
+      <BarShading width={100} color="#d5d5d5" focused={focused} />
+      <BarShading width={showResults ? percentage : 0} color="rgb(137, 206, 232)" delay={`${animationDelay}s`} />
       <BarFlexContainer selected={selected}>
         <BarSelectedShading color="green" />
         <BarTitle>{name}</BarTitle>
@@ -120,12 +126,14 @@ GraphBar.propTypes = {
   showResults: PropTypes.bool,
   animationDelay: PropTypes.number,
   selected: PropTypes.bool,
+  focused: PropTypes.bool,
 };
 
 GraphBar.defaultProps = {
   showResults: true,
   animationDelay: 0,
   selected: false,
+  focused: false,
 };
 
 export default GraphBar;
