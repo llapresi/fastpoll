@@ -145,7 +145,7 @@ const PollPage = ({ match }) => {
             <ResultsButton
               type="button"
               onClick={(e) => { setHasVoted(true); e.preventDefault(); }}
-              disabled={hasVoted}
+              disabled={hasVoted || poll.totalVotes === 0}
             >
               Results
             </ResultsButton>
