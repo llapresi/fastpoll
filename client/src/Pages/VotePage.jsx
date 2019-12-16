@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { SpaceBetweenRow, VerticalList, WidthParent } from 'Utilities';
-import { PollForm, Button } from 'Components';
+import { PollForm, Button, PageHeader, PageTitle, HeaderFlexRow } from 'Components';
 
 const getData = (url, callback) => {
   fetch(url)
@@ -28,19 +28,6 @@ const ResultsButton = styled(Button)`
   }
 `;
 
-const Header = styled.div`
-  width: 100%;
-  background-color: rgb(5, 50, 54);
-  color: white;
-  padding-top: 60px;
-  padding-bottom: 60px;
-
-  @media (max-width: 600px) {
-    padding-top: 0px;
-    padding-bottom: 56px;
-  }
-`;
-
 const PollTitle = styled.h1`
   font-size: 48px;
   margin: 0;
@@ -61,14 +48,6 @@ const TotalVotes = styled.div`
   font-size: 24px;
 `;
 
-const HeaderFlexRow = styled(SpaceBetweenRow)`
-  align-items: flex-end;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-`;
 
 const PollPage = ({ match }) => {
   // Hold our fetched poll in use state and use useEffect to load on mount
@@ -125,14 +104,14 @@ const PollPage = ({ match }) => {
 
   return (
     <>
-      <Header>
+      <PageHeader>
         <WidthParent>
           <HeaderFlexRow>
-            <PollTitle>{poll.name}</PollTitle>
+            <PageTitle>{poll.name}</PageTitle>
             <TotalVotes>{`${poll.totalVotes} Votes`}</TotalVotes>
           </HeaderFlexRow>
         </WidthParent>
-      </Header>
+      </PageHeader>
       <PollParent>
         <VerticalList spacing="12">
           <PollForm
