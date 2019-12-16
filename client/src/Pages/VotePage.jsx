@@ -1,14 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { SpaceBetweenRow } from 'Utilities';
-import { PollForm } from 'Components';
+import { SpaceBetweenRow, VerticalList } from 'Utilities';
+import { PollForm, Button } from 'Components';
 
 const getData = (url, callback) => {
   fetch(url)
     .then((res) => res.json())
     .then((res) => callback(res));
 };
+
+const FormButtons = styled(SpaceBetweenRow)`
+  justify-content: flex-end;
+  opacity: ${(props) => (props.hide ? 0 : 1)};
+  transition: opacity 0.12s;
+`;
+
+const ResultsButton = styled(Button)`
+  background-color: transparent;
+  border: 1px solid rgb(30, 41, 41);
+  border-radius: 12px;
+  color: black;
+
+  :hover:enabled,
+  :focus:enabled {
+      background: rgb(237, 240, 240);
+  }
+`;
 
 const PollPage = ({ match }) => {
   // Hold our fetched poll in use state and use useEffect to load on mount
@@ -64,26 +83,40 @@ const PollPage = ({ match }) => {
   }, [submit]);
 
   return (
-    <div>
+    <VerticalList spacing="12">
       <h3><Link to="/">Back</Link></h3>
       <h1>{poll.name}</h1>
       <SpaceBetweenRow>
         <p>{`Total Votes: ${poll.totalVotes}`}</p>
-        { !hasVoted && <button type="button" onClick={() => setHasVoted(true)}>Skip Voting and Show Results</button>}
       </SpaceBetweenRow>
       <PollForm
         poll={poll}
         selected={vote}
         onChange={(e) => setVote(Number(e.target.value))}
-        onSubmit={(e) => {
-          setSubmit(true);
-          e.preventDefault();
-        }}
         showResults={hasVoted}
       />
-      {/* Show vote message if not voted and there isn't a reponse */}
+      <FormButtons hide={hasVoted}>
+        <ResultsButton
+          type="button"
+          onClick={(e) => { setHasVoted(true); e.preventDefault(); }}
+          disabled={hasVoted}
+        >
+          Results
+        </ResultsButton>
+        <Button
+          type="submit"
+          onClick={(e) => {
+            setSubmit(true);
+            e.preventDefault();
+          }}
+          disabled={vote === null || hasVoted}
+        >
+            Vote
+        </Button>
+      </FormButtons>
+      { /* Show vote message if not voted and there isn't a reponse */}
       <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
-    </div>
+    </VerticalList>
   );
 };
 
