@@ -14,6 +14,9 @@ const AppContainer = styled.div`
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
+  padding-left: 12px;
+  padding-right: 12px;
+  height: 100%;
 `;
 
 function App() {
