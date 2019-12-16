@@ -1,7 +1,7 @@
 import GraphBar from './GraphBar';
 import PollForm from './PollForm';
 import PollList from './PollList';
-import Button from './Button';
+import { Button, SecondaryButton } from './Button';
 import Toolbar from './Toolbar';
 import { PageHeader, PageTitle, HeaderFlexRow} from './PageHeader';
 
@@ -10,6 +10,7 @@ export {
   PollForm,
   PollList,
   Button,
+  SecondaryButton,
   Toolbar,
   PageHeader,
   PageTitle,

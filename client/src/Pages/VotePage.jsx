@@ -28,16 +28,6 @@ const ResultsButton = styled(Button)`
   }
 `;
 
-const PollTitle = styled.h1`
-  font-size: 48px;
-  margin: 0;
-
-  @media (max-width: 600px) {
-    font-size: 36px;
-    padding-bottom: 6px;
-  }
-`;
-
 const PollParent = styled(WidthParent)`
   background-color: white;
   padding: 18px;

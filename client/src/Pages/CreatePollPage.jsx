@@ -3,37 +3,64 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import { Link, Redirect } from 'react-router-dom';
-import { VerticalList, SpaceBetweenRow, handleErrors, WidthParent } from 'Utilities';
+import { Redirect } from 'react-router-dom';
+import {
+  VerticalList, SpaceBetweenRow, handleErrors, WidthParent,
+} from 'Utilities';
+
+import {
+  Button, SecondaryButton, PageHeader, HeaderFlexRow,
+} from 'Components';
 
 const NameTextbox = styled.input`
-  height: auto;
-  background-color: lightgrey;
-  border:none;
+  border: none;
+  display: inline;
+  font-family: inherit;
+  font-size: inherit;
+  padding: none;
+  font-size: 48px;
+  font-weight: 700;
+  background: rgb(57, 84, 87);
+  color: inherit;
+  width: 100%;
 
-  font-size: 1.5em;
-  font-weight: bold;
-  padding: 2px;
+  @media (max-width: 600px) {
+    font-size: 36px;
+  }
 `;
 
-const OptionTextbox = styled(NameTextbox)`
+const OptionTextbox = styled.input`
   height: 80px;
   flex-grow: 1;
   min-width: 0px;
   background-color: #d6d6d6;
   padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 400;
+  font-size: 1.5em;
+
+  :focus {
+    box-shadow: inset 0 3px 30px rgba(0,0,0, 0.18), inset 0 3px 8px rgba(0,0,0, 0.18);
+  }
+
+  transition: box-shadow 0.13s ease-out;
 `;
 
-const PollButton = styled.button`
-  min-width: 40px;
-  min-height: 40px;
+const RemoveButton = styled(SecondaryButton)`
+  width: 35px;
+  height: 35px;
   font-size: 1.2em;
   font-weight: bold;
+  padding: 0;
+  border-radius: 50%;
+  flex-shrink 0;
 `;
 
-const PollHeader = styled.h2`
-  display: inline;
-  margin: 0;
+const PollParent = styled(WidthParent)`
+  background-color: white;
+  padding: 18px;
+  margin-top: -48px;
 `;
 
 // Functions used to update the array of poll options in the state
@@ -57,9 +84,9 @@ const removeOption = (index, options, callback) => {
 
 // Pairs a OptionTextbox and a PollButton for removal in one component
 const OptionInput = ({ value, onChange, onRemove }) => (
-  <div style={{ display: 'flex' }}>
+  <div style={{ display: 'flex', alignItems: 'center' }}>
     <OptionTextbox type="text" value={value} onChange={onChange} />
-    <PollButton type="button" onClick={onRemove}>-</PollButton>
+    <RemoveButton type="button" onClick={onRemove}>-</RemoveButton>
   </div>
 );
 
@@ -72,7 +99,7 @@ OptionInput.propTypes = {
 const CreatePollPage = () => {
   // Stores name of our poll and our poll options
   const [options, setOptions] = useState(['first', 'second']);
-  const [pollName, setPollName] = useState('New poll');
+  const [pollName, setPollName] = useState('');
 
   // When set to true, component makes POST to polls to make the new poll
   const [shouldSubmit, setShouldSubmit] = useState(false);
@@ -122,25 +149,30 @@ const CreatePollPage = () => {
     />
   ));
   return (
-    <WidthParent>
-      <VerticalList spacing="12">
-        <span>
-          <PollHeader>Poll Name: </PollHeader>
-          <NameTextbox type="text" value={pollName} onChange={(e) => setPollName(e.target.value)} />
-        </span>
+    <>
+      <PageHeader>
+        <WidthParent>
+          <HeaderFlexRow>
+            <NameTextbox placeholder="New Poll Name:" type="text" value={pollName} onChange={(e) => setPollName(e.target.value)} />
+          </HeaderFlexRow>
+        </WidthParent>
+      </PageHeader>
+      <PollParent>
         <VerticalList spacing="12">
-          {inputElements}
+          <VerticalList spacing="12">
+            {inputElements}
+          </VerticalList>
+          <SpaceBetweenRow>
+            <SecondaryButton type="button" onClick={(() => addOption(options, setOptions))}>+ Add Option</SecondaryButton>
+            <Button type="submit" onClick={(() => setShouldSubmit(true))}>Submit</Button>
+          </SpaceBetweenRow>
+          <div>
+            {errorMessage}
+          </div>
+          {redirectUrl !== null ? <Redirect to={`/poll/${redirectUrl}`} /> : null }
         </VerticalList>
-        <SpaceBetweenRow>
-          <PollButton type="button" onClick={(() => addOption(options, setOptions))}>+ Add Option</PollButton>
-          <PollButton type="submit" onClick={(() => setShouldSubmit(true))}>Submit</PollButton>
-        </SpaceBetweenRow>
-        <div>
-          {errorMessage}
-        </div>
-        {redirectUrl !== null ? <Redirect to={`/poll/${redirectUrl}`} /> : null }
-      </VerticalList>
-    </WidthParent>
+      </PollParent>
+    </>
   );
 };
 

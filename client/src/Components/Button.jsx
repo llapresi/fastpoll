@@ -34,6 +34,18 @@ const Button = styled.button`
 }
 `;
 
+const SecondaryButton = styled(Button)`
+  background-color: transparent;
+  border: 1px solid rgb(30, 41, 41);
+  border-radius: 12px;
+  color: black;
+
+  :hover:enabled,
+  :focus:enabled {
+      background: rgb(237, 240, 240);
+  }
+`;
+
 
 Button.defaultProps = {
   backgroundColor: 'rgb(30, 41, 41)',
@@ -41,4 +53,7 @@ Button.defaultProps = {
   hoverColor: 'rgb(66, 82, 82)',
 };
 
-export default Button;
+export {
+  Button,
+  SecondaryButton,
+};
