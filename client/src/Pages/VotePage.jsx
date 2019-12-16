@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { SpaceBetweenRow, VerticalList } from 'Utilities';
+import { SpaceBetweenRow, VerticalList, WidthParent } from 'Utilities';
 import { PollForm, Button } from 'Components';
 
 const getData = (url, callback) => {
@@ -29,30 +28,22 @@ const ResultsButton = styled(Button)`
   }
 `;
 
-const Header = styled(SpaceBetweenRow)`
-  height: 170px;
-  color: white;
-  align-items: baseline;
-`;
-
-const HeaderBackground = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4000px;
-  margin-left: -400px;
-  height: 250px;
+const Header = styled.div`
+  width: 100%;
   background-color: rgb(5, 50, 54);
-  z-index: -1;
+  height: 300px;
+  color: white;
+  padding-top: 24px;
 `;
 
 const PollTitle = styled.h1`
   font-size: 72px;
 `;
 
-const PollParent = styled(VerticalList)`
+const PollParent = styled(WidthParent)`
   background-color: white;
   padding: 18px;
+  margin-top: -48px;
 `;
 
 const TotalVotes = styled.div`
@@ -115,40 +106,43 @@ const PollPage = ({ match }) => {
   return (
     <>
       <Header>
-        <PollTitle>{poll.name}</PollTitle>
-        <TotalVotes>{`Total Votes: ${poll.totalVotes}`}</TotalVotes>
-        <HeaderBackground />
+        <WidthParent>
+          <SpaceBetweenRow styled={{ alignItems: 'baseline' }}>
+            <PollTitle>{poll.name}</PollTitle>
+            <TotalVotes>{`Total Votes: ${poll.totalVotes}`}</TotalVotes>
+          </SpaceBetweenRow>
+        </WidthParent>
       </Header>
-      <PollParent spacing="12">
-        <SpaceBetweenRow>
-        </SpaceBetweenRow>
-        <PollForm
-          poll={poll}
-          selected={vote}
-          onChange={(e) => setVote(Number(e.target.value))}
-          showResults={hasVoted}
-        />
-        <FormButtons hide={hasVoted}>
-          <ResultsButton
-            type="button"
-            onClick={(e) => { setHasVoted(true); e.preventDefault(); }}
-            disabled={hasVoted}
-          >
-            Results
-          </ResultsButton>
-          <Button
-            type="submit"
-            onClick={(e) => {
-              setSubmit(true);
-              e.preventDefault();
-            }}
-            disabled={vote === null || hasVoted}
-          >
-              Vote
-          </Button>
-        </FormButtons>
-        { /* Show vote message if not voted and there isn't a reponse */}
-        <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
+      <PollParent>
+        <VerticalList spacing="12">
+          <PollForm
+            poll={poll}
+            selected={vote}
+            onChange={(e) => setVote(Number(e.target.value))}
+            showResults={hasVoted}
+          />
+          <FormButtons hide={hasVoted}>
+            <ResultsButton
+              type="button"
+              onClick={(e) => { setHasVoted(true); e.preventDefault(); }}
+              disabled={hasVoted}
+            >
+              Results
+            </ResultsButton>
+            <Button
+              type="submit"
+              onClick={(e) => {
+                setSubmit(true);
+                e.preventDefault();
+              }}
+              disabled={vote === null || hasVoted}
+            >
+                Vote
+            </Button>
+          </FormButtons>
+          { /* Show vote message if not voted and there isn't a reponse */}
+          <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
+        </VerticalList>
       </PollParent>
     </>
   );

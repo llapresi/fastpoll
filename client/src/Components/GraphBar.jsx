@@ -27,7 +27,7 @@ const BarShading = styled.div`
   transition-delay: ${(props) => props.delay};
   will-change: transform, box-shadow;
   box-shadow: ${(props) => {
-    const opacity = props.focused ? 0.18 : 0;
+    const opacity = props.focused && !props.showResults ? 0.18 : 0;
     return `inset 0 3px 30px rgba(0,0,0, ${opacity}), inset 0 3px 8px rgba(0,0,0, ${opacity})`;
   }};
   transition: transform 0.3s, background-color 0.2s, box-shadow 0.13s ease-out;
@@ -105,7 +105,7 @@ const GraphBar = ({
       selected={selected}
       showResults={showResults}
     >
-      <BarShading width={100} color="#d5d5d5" focused={focused} />
+      <BarShading width={100} color="#d5d5d5" focused={focused} showResults={showResults} />
       <BarShading width={showResults ? percentage : 0} color="rgb(137, 206, 232)" delay={`${animationDelay}s`} />
       <BarFlexContainer selected={selected}>
         <BarSelectedShading color="green" />
