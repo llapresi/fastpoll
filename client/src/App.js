@@ -3,8 +3,8 @@ import styled from '@emotion/styled';
 import {
   BrowserRouter as Router,
 } from 'react-router-dom';
-import Routes from './Routes';
 import { Toolbar } from 'Components';
+import Routes from './Routes';
 
 const AppContainer = styled.div`
   * {
@@ -18,6 +18,7 @@ function App() {
   return (
     <AppContainer>
       <Router>
+        <Toolbar />
         <Routes />
       </Router>
     </AppContainer>
