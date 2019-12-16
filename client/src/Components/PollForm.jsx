@@ -5,23 +5,11 @@ import { VerticalList } from 'Utilities';
 import GraphBar from './GraphBar';
 
 const VoteButton = styled.input`
-opacity:0;
-position:absolute;
-`;
-
-
-const OptionShadow = styled.div`
+  opacity:0;
   position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  box-shadow: inherit;
-  transition: box-shadow 0.13s ease-out;
 `;
 
-
-const InputRow = styled.div`
+const InputRow = styled.label`
   display: flex;
   position:relative;
 `;
@@ -43,17 +31,14 @@ const PollInput = ({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
       />
-      <label style={{width: '100%'}} htmlFor={`option${option.id}`}>
-        <GraphBar
-          animationDelay={0.16 + animationDelay}
-          option={option}
-          totalVotes={totalVotes}
-          showResults={showResults}
-          selected={!showResults ? checked : false}
-          focused={focused}
-        />
-        <OptionShadow />
-      </label>
+      <GraphBar
+        animationDelay={0.16 + animationDelay}
+        option={option}
+        totalVotes={totalVotes}
+        showResults={showResults}
+        selected={!showResults ? checked : false}
+        focused={focused}
+      />
     </InputRow>
   );
 };
