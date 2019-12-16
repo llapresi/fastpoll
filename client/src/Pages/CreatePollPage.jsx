@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
-import { VerticalList, SpaceBetweenRow, handleErrors } from 'Utilities';
+import { VerticalList, SpaceBetweenRow, handleErrors, WidthParent } from 'Utilities';
 
 const NameTextbox = styled.input`
   height: auto;
@@ -122,24 +122,25 @@ const CreatePollPage = () => {
     />
   ));
   return (
-    <VerticalList spacing="12">
-      <h3><Link to="/">Back</Link></h3>
-      <span>
-        <PollHeader>Poll Name: </PollHeader>
-        <NameTextbox type="text" value={pollName} onChange={(e) => setPollName(e.target.value)} />
-      </span>
+    <WidthParent>
       <VerticalList spacing="12">
-        {inputElements}
+        <span>
+          <PollHeader>Poll Name: </PollHeader>
+          <NameTextbox type="text" value={pollName} onChange={(e) => setPollName(e.target.value)} />
+        </span>
+        <VerticalList spacing="12">
+          {inputElements}
+        </VerticalList>
+        <SpaceBetweenRow>
+          <PollButton type="button" onClick={(() => addOption(options, setOptions))}>+ Add Option</PollButton>
+          <PollButton type="submit" onClick={(() => setShouldSubmit(true))}>Submit</PollButton>
+        </SpaceBetweenRow>
+        <div>
+          {errorMessage}
+        </div>
+        {redirectUrl !== null ? <Redirect to={`/poll/${redirectUrl}`} /> : null }
       </VerticalList>
-      <SpaceBetweenRow>
-        <PollButton type="button" onClick={(() => addOption(options, setOptions))}>+ Add Option</PollButton>
-        <PollButton type="submit" onClick={(() => setShouldSubmit(true))}>Submit</PollButton>
-      </SpaceBetweenRow>
-      <div>
-        {errorMessage}
-      </div>
-      {redirectUrl !== null ? <Redirect to={`/poll/${redirectUrl}`} /> : null }
-    </VerticalList>
+    </WidthParent>
   );
 };
 

@@ -5,6 +5,7 @@ const WidthParent = styled.div`
   max-width: 900px;
   margin: 0 auto;
   padding: 12px;
+  height: 100%;
 `;
 
 export default WidthParent;

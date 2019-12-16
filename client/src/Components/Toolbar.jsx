@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
+import { WidthParent } from 'Utilities';
 
 const TitlebarBackground = styled.div`
   width: 100%;
@@ -10,8 +11,6 @@ const TitlebarBackground = styled.div`
 `;
 
 const TitlebarParent = styled.nav`
-  max-width: 900px;
-  padding: 12px;
   width: 100%;
   height 100%;
   margin: 0 auto;
@@ -33,9 +32,11 @@ const Title = styled(Link)`
 
 const Titlebar = () => (
   <TitlebarBackground>
-    <TitlebarParent>
-      <Title to="/">Fastpoll</Title>
-    </TitlebarParent>
+    <WidthParent>
+      <TitlebarParent>
+        <Title to="/">Fastpoll</Title>
+      </TitlebarParent>
+    </WidthParent>
   </TitlebarBackground>
 );
 
