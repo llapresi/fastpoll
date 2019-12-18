@@ -2,8 +2,8 @@ import React from 'react';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
 import { FetchMock } from '@react-mock/fetch';
 import { MemoryRouter } from 'react-router-dom';
-import VotePage from '../VotePage';
-import { testPoll } from '../../Utilities/testData';
+import { testPoll } from 'Utilities/testData';
+import { VotePage } from 'Pages';
 
 // provided to PollPage component as mock poll id
 const match = {
@@ -31,9 +31,9 @@ test('fetches poll on component mount and renders correctly', async () => {
   await waitForElement(() => getByText(/Test poll/i));
 });
 
-test('Posts vote to server and renders response', async () => {
+test('Posts a vote to server and renders a response', async () => {
   // Setup mock callback
-  const { getByText } = render(
+  const { getByText, getByLabelText } = render(
     <FetchMock
       mocks={[
         { matcher: '/api/polls/roflcopter', method: 'GET', response: testPoll },
@@ -45,9 +45,12 @@ test('Posts vote to server and renders response', async () => {
       </MemoryRouter>
     </FetchMock>,
   );
-  // Test if bars render
-  await waitForElement(() => getByText('Option Whatever'));
-  fireEvent.click(getByText(/Option Whatever/i));
+  // Test if click event works
+  await waitForElement(() => getByLabelText(/Option Whatever/i));
+  fireEvent.click(getByLabelText(/Option Whatever/i), {
+    selector: 'input',
+  });
+  fireEvent.click(getByText('Vote'));
   // Test of poll title renders
   await waitForElement(() => getByText('You voted for Option Whatever'));
 });

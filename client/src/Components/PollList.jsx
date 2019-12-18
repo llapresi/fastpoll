@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import VerticalList from '../Utilities/VerticalList';
+import { VerticalList } from 'Utilities';
 
 const PollListItem = styled.div`
   background-color: #d6d6d6;

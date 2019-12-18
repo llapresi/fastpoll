@@ -2,8 +2,8 @@ import React from 'react';
 import { render, waitForElement } from '@testing-library/react';
 import { FetchMock } from '@react-mock/fetch';
 import { MemoryRouter } from 'react-router-dom';
-import HomePage from '../HomePage';
-import { testPollList } from '../../Utilities/testData';
+import { HomePage } from 'Pages';
+import { testPollList } from 'Utilities/testData';
 
 // Tests that home page can fetch allpolls api and display polls
 test('fetches and renders list of polls', async () => {

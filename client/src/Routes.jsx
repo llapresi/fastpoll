@@ -2,9 +2,7 @@ import React from 'react';
 import {
   Route,
 } from 'react-router-dom';
-import HomePage from './Pages/HomePage';
-import VotePage from './Pages/VotePage';
-import CreatePollPage from './Pages/CreatePollPage';
+import { HomePage, VotePage, CreatePollPage } from 'Pages';
 
 const Routes = () => (
   <div>
