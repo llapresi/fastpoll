@@ -3,7 +3,9 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import styled from '@emotion/styled';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { SpaceBetweenRow, VerticalList, WidthParent } from 'Utilities';
-import { PollForm, Button, PageHeader, PageTitle, HeaderFlexRow } from 'Components';
+import {
+  PollForm, Button, PageHeader, PageTitle, HeaderFlexRow,
+} from 'Components';
 
 const getData = (url, callback) => {
   fetch(url)
@@ -42,7 +44,7 @@ const TotalVotes = styled.div`
 
 const PollPage = ({ match }) => {
   // Hold our fetched poll in use state and use useEffect to load on mount
-  const [poll, setPoll] = useState({});
+  const [poll, setPoll] = useState(null);
   const [vote, setVote] = useState(null);
   const [submit, setSubmit] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
@@ -93,21 +95,21 @@ const PollPage = ({ match }) => {
     }
   }, [submit]);
 
-  const titleElement = Object.keys(poll).length !== 0 ? (
+  const titleElement = poll ? (
     <HeaderFlexRow>
       <PageTitle>{poll.name}</PageTitle>
       <TotalVotes>{`${poll.totalVotes} Votes`}</TotalVotes>
     </HeaderFlexRow>
   ) : (
-      <SkeletonTheme color="rgb(32, 73, 76)" highlightColor="rgb(47, 106, 111)">
-        <HeaderFlexRow>
-          <PageTitle><Skeleton width={400} /></PageTitle>
-          <TotalVotes><Skeleton width={100} /></TotalVotes>
-        </HeaderFlexRow>
-      </SkeletonTheme>
+    <SkeletonTheme color="rgb(32, 73, 76)" highlightColor="rgb(47, 106, 111)">
+      <HeaderFlexRow>
+        <PageTitle><Skeleton width={400} /></PageTitle>
+        <TotalVotes><Skeleton width={100} /></TotalVotes>
+      </HeaderFlexRow>
+    </SkeletonTheme>
   );
 
-  const formElement = Object.keys(poll).length !== 0 ? (
+  const formElement = poll ? (
     <>
       <PollForm
         poll={poll}
@@ -138,17 +140,17 @@ const PollPage = ({ match }) => {
       <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
     </>
   ) : (
-      <>
-        <div>
-          <Skeleton width="100%" height={80} />
-        </div>
-        <div>
-          <Skeleton width="100%" height={80} />
-        </div>
-        <div>
-          <Skeleton width="100%" height={80} />
-        </div>
-      </>
+    <>
+      <div>
+        <Skeleton width="100%" height={80} />
+      </div>
+      <div>
+        <Skeleton width="100%" height={80} />
+      </div>
+      <div>
+        <Skeleton width="100%" height={80} />
+      </div>
+    </>
   );
 
   return (
@@ -164,7 +166,7 @@ const PollPage = ({ match }) => {
             {formElement}
           </VerticalList>
         </SkeletonTheme>
-      </PollParent> 
+      </PollParent>
     </>
   );
 };
