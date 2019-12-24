@@ -13,7 +13,9 @@
     "build": "cd client && npm run build"
   },
   "nodemonConfig": {
-    "ignore": ["client/*"]
+    "ignore": [
+      "client/*"
+    ]
   },
   "author": "",
   "license": "ISC",

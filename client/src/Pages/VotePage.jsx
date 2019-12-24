@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import styled from '@emotion/styled';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { SpaceBetweenRow, VerticalList, WidthParent } from 'Utilities';
@@ -92,47 +93,78 @@ const PollPage = ({ match }) => {
     }
   }, [submit]);
 
+  const titleElement = Object.keys(poll).length !== 0 ? (
+    <HeaderFlexRow>
+      <PageTitle>{poll.name}</PageTitle>
+      <TotalVotes>{`${poll.totalVotes} Votes`}</TotalVotes>
+    </HeaderFlexRow>
+  ) : (
+      <SkeletonTheme color="rgb(32, 73, 76)" highlightColor="rgb(47, 106, 111)">
+        <HeaderFlexRow>
+          <PageTitle><Skeleton width={400} /></PageTitle>
+          <TotalVotes><Skeleton width={100} /></TotalVotes>
+        </HeaderFlexRow>
+      </SkeletonTheme>
+  );
+
+  const formElement = Object.keys(poll).length !== 0 ? (
+    <>
+      <PollForm
+        poll={poll}
+        selected={vote}
+        onChange={(e) => setVote(Number(e.target.value))}
+        showResults={hasVoted}
+      />
+      <FormButtons hide={hasVoted}>
+        <ResultsButton
+          type="button"
+          onClick={(e) => { setHasVoted(true); e.preventDefault(); }}
+          disabled={hasVoted || poll.totalVotes === 0}
+        >
+          Results
+        </ResultsButton>
+        <Button
+          type="submit"
+          onClick={(e) => {
+            setSubmit(true);
+            e.preventDefault();
+          }}
+          disabled={vote === null || hasVoted}
+        >
+            Vote
+        </Button>
+      </FormButtons>
+      { /* Show vote message if not voted and there isn't a reponse */}
+      <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
+    </>
+  ) : (
+      <>
+        <div>
+          <Skeleton width="100%" height={80} />
+        </div>
+        <div>
+          <Skeleton width="100%" height={80} />
+        </div>
+        <div>
+          <Skeleton width="100%" height={80} />
+        </div>
+      </>
+  );
+
   return (
     <>
       <PageHeader>
         <WidthParent>
-          <HeaderFlexRow>
-            <PageTitle>{poll.name}</PageTitle>
-            <TotalVotes>{`${poll.totalVotes} Votes`}</TotalVotes>
-          </HeaderFlexRow>
+          {titleElement}
         </WidthParent>
       </PageHeader>
       <PollParent>
-        <VerticalList spacing="12">
-          <PollForm
-            poll={poll}
-            selected={vote}
-            onChange={(e) => setVote(Number(e.target.value))}
-            showResults={hasVoted}
-          />
-          <FormButtons hide={hasVoted}>
-            <ResultsButton
-              type="button"
-              onClick={(e) => { setHasVoted(true); e.preventDefault(); }}
-              disabled={hasVoted || poll.totalVotes === 0}
-            >
-              Results
-            </ResultsButton>
-            <Button
-              type="submit"
-              onClick={(e) => {
-                setSubmit(true);
-                e.preventDefault();
-              }}
-              disabled={vote === null || hasVoted}
-            >
-                Vote
-            </Button>
-          </FormButtons>
-          { /* Show vote message if not voted and there isn't a reponse */}
-          <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
-        </VerticalList>
-      </PollParent>
+        <SkeletonTheme color="rgb(232, 232, 232)" highlightColor="rgb(218, 218, 218)">
+          <VerticalList spacing="12">
+            {formElement}
+          </VerticalList>
+        </SkeletonTheme>
+      </PollParent> 
     </>
   );
 };
