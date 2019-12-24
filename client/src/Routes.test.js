@@ -7,7 +7,7 @@ import Routes from './Routes';
 
 test('navigates to route on click', async () => {
   // Setup mock callback
-  const { getByText } = render(
+  const { getByText, getByPlaceholderText } = render(
     <FetchMock
       mocks={[
         { matcher: '/api/polls', method: 'GET', response: testPollList },
@@ -22,5 +22,5 @@ test('navigates to route on click', async () => {
   await waitForElement(() => getByText(/Create a New Poll/));
   // Click the link and see if the New Poll page comes up
   fireEvent.click(getByText(/Create a New Poll/));
-  await waitForElement(() => getByText(/Poll Name:/));
+  await waitForElement(() => getByPlaceholderText(/New Poll Name:/));
 });
