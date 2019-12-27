@@ -1,0 +1,5 @@
+{
+  "spec": "./**/*.test.js",
+  "exclude": ["./client/**", "./node_modules/**"],
+  "reporter": "spec"
+}
