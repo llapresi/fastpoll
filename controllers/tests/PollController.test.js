@@ -18,66 +18,69 @@ const controller = proxyquire('../PollController', {
 });
 
 const res = mockResponse();
+let req = mockResponse();
 
 
 describe('controllers/PollController', () => {
-  context('findPollById / poll exists', () => {
-    const testData = { id: 1, name: 'Test Poll', urlId: 'fsf_sfs12' };
-    before(async () => {
-      Poll.findOne.resolves(testData);
-
+  context('findPollById', () => {
+    before(() => {
       PollOption.sum.resolves(21);
-      const req = mockRequest({
+      req = mockRequest({
         params: {
           id: 1,
         },
       });
-      controller.findPollById(req, res);
     });
 
     after(() => {
-      res.send.resetHistory();
-      Poll.findOne.reset();
       PollOption.sum.reset();
+      req = mockResponse();
     });
 
-    it('calls findOne function', () => {
-      expect(Poll.findOne).to.have.been.called;
-    });
-
-    it('returns correct Poll for id', () => {
-      expect(res.send).to.have.been.calledWith(match({ ...testData, totalVotes: 21 }));
-    });
-  });
-
-  context('findPollById / poll does not exist', () => {
-    before(async () => {
-      Poll.findOne.resolves(undefined);
-      const req = mockRequest({
-        params: {
-          id: 1,
-        },
+    context('poll exists', () => {
+      const mockData = { id: 1, name: 'Test Poll', urlId: 'fsf_sfs12' };
+      before(async () => {
+        Poll.findOne.resolves(mockData);
+        controller.findPollById(req, res);
       });
-      controller.findPollById(req, res);
+
+      after(() => {
+        res.send.resetHistory();
+        Poll.findOne.reset();
+      });
+
+      it('calls findOne function', () => {
+        expect(Poll.findOne).to.have.been.called;
+      });
+
+      it('returns Poll', () => {
+        expect(res.send).to.have.been.calledWith(match({ ...mockData, totalVotes: 21 }));
+      });
     });
 
-    after(() => {
-      res.send.resetHistory();
-      res.status.resetHistory();
-      Poll.findOne.reset();
-      PollOption.sum.reset();
-    });
+    context('poll does not exist', () => {
+      before(async () => {
+        Poll.findOne.resolves(undefined);
+        controller.findPollById(req, res);
+      });
 
-    it('calls findOne function', () => {
-      expect(Poll.findOne).to.have.been.called;
-    });
+      after(() => {
+        res.send.resetHistory();
+        res.status.resetHistory();
+        Poll.findOne.reset();
+      });
 
-    it('sends 404 response', () => {
-      expect(res.status).to.have.been.calledWith(match(404));
-    });
+      it('calls findOne function', () => {
+        expect(Poll.findOne).to.have.been.called;
+      });
 
-    it('returns error msg', async () => {
-      expect(res.send).to.have.been.calledWith(match('Cannot read property \'id\' of undefined'));
+      it('sends 404 response', () => {
+        expect(res.status).to.have.been.calledWith(match(404));
+      });
+
+      it('returns error msg', async () => {
+        expect(res.send).to.have.been.calledWith(match('Cannot read property \'id\' of undefined'));
+      });
     });
   });
 
