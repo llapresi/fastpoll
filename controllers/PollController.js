@@ -2,6 +2,8 @@ const shortid = require('shortid');
 const { Poll, PollOption, sequelize } = require('../models');
 
 const createPoll = (req, res) => {
+  // Create Poll and Options as transaction so that Poll and Option will only
+  // be created if both pass validation
   sequelize.transaction((t) => (
     Poll.create({
       name: req.body.name,

@@ -80,4 +80,7 @@ describe('controllers/PollController', () => {
       expect(res.send).to.have.been.calledWith(match('Cannot read property \'id\' of undefined'));
     });
   });
+
+  // createModel cannot be tested right now as sequelize-test-helpers lacks support for
+  // mocking transactions. Consider making an issue + PR for this on sth's github.
 });
