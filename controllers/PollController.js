@@ -43,7 +43,7 @@ const getPolls = (req, res) => {
     attributes: ['id', 'name', 'urlId'],
   })
     .then((polls) => res.json(polls))
-    .catch((err) => res.status(400).json(err.message));
+    .catch((err) => res.status(404).json(err.message));
 };
 
 module.exports.createPoll = createPoll;

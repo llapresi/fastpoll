@@ -17,8 +17,8 @@ const controller = proxyquire('../PollController', {
   '../models': mockModels,
 });
 
-const res = mockResponse();
-let req = mockResponse();
+let res = mockResponse();
+let req = mockRequest();
 
 
 describe('controllers/PollController', () => {
@@ -34,7 +34,8 @@ describe('controllers/PollController', () => {
 
     after(() => {
       PollOption.sum.reset();
-      req = mockResponse();
+      req = mockRequest();
+      res = mockResponse();
     });
 
     context('poll exists', () => {
@@ -74,12 +75,56 @@ describe('controllers/PollController', () => {
         expect(Poll.findOne).to.have.been.called;
       });
 
-      it('sends 404 response', () => {
+      it('sends response with 404 code', () => {
         expect(res.status).to.have.been.calledWith(match(404));
       });
 
       it('returns error msg', async () => {
         expect(res.send).to.have.been.calledWith(match('Cannot read property \'id\' of undefined'));
+      });
+    });
+  });
+
+  context('getPolls', () => {
+    context('polls exist', () => {
+      const mockData = { test: 'testy mctestface' };
+      before(async () => {
+        Poll.findAll.resolves(mockData);
+        controller.getPolls(req, res);
+      });
+
+      after(() => {
+        res.json.resetHistory();
+        Poll.findAll.reset();
+      });
+
+      it('calls findAll function', () => {
+        expect(Poll.findAll).to.have.been.called;
+      });
+
+      it('returns Poll', () => {
+        expect(res.json).to.have.been.calledWith(match(mockData));
+      });
+    });
+
+    context('polls do not exist', () => {
+      before(async () => {
+        Poll.findAll.resolves(undefined);
+        controller.getPolls(req, res);
+      });
+
+      after(() => {
+        res.status.resetHistory();
+        res.json.resetHistory();
+        Poll.findAll.reset();
+      });
+
+      it('calls findAll function', () => {
+        expect(Poll.findAll).to.have.been.called;
+      });
+
+      it('sends empty array', () => {
+        expect(res.json).to.have.been.calledWith(undefined);
       });
     });
   });
