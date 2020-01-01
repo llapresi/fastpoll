@@ -4,7 +4,7 @@
   "description": "Full stack real time poll app. Created using Socket.io, Express and Create React App",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --watch",
     "dev-server": "nodemon ./server.js",
     "dev-client": "cd client && npm start",
     "dev": "concurrently \"npm:dev-*\"",
@@ -27,10 +27,17 @@
     "shortid": "^2.2.15"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "concurrently": "^5.0.1",
     "eslint": "^6.7.2",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.19.1",
-    "nodemon": "^2.0.1"
+    "mocha": "^6.2.2",
+    "mock-req-res": "^1.1.4",
+    "nodemon": "^2.0.1",
+    "proxyquire": "^2.1.3",
+    "sequelize-test-helpers": "^1.2.1",
+    "sinon": "^8.0.1",
+    "sinon-chai": "^3.4.0"
   }
 }

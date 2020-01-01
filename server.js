@@ -22,6 +22,7 @@ app.get('/api/polls/', PollController.getPolls);
 // Vote for a PollOption (using PollOption id)
 app.post('/api/vote', VoteController.makeVote);
 
+// Return our built client if given request that doesn't match any of the above
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });

@@ -1,8 +1,10 @@
 const shortid = require('shortid');
-const { Poll, PollOption, db } = require('../models');
+const { Poll, PollOption, sequelize } = require('../models');
 
 const createPoll = (req, res) => {
-  db.transaction((t) => (
+  // Create Poll and Options as transaction so that Poll and Option will only
+  // be created if both pass validation
+  sequelize.transaction((t) => (
     Poll.create({
       name: req.body.name,
       urlId: shortid.generate(),
@@ -32,7 +34,7 @@ const findPollById = (req, res) => {
         return res.send(jsonObj);
       });
     })
-    .catch((err) => res.status(400).send(err.message));
+    .catch((err) => res.status(404).send(err.message));
 };
 
 // Return all polls
@@ -41,7 +43,7 @@ const getPolls = (req, res) => {
     attributes: ['id', 'name', 'urlId'],
   })
     .then((polls) => res.json(polls))
-    .catch((err) => res.status(400).json(err.message));
+    .catch((err) => res.status(404).json(err.message));
 };
 
 module.exports.createPoll = createPoll;

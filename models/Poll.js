@@ -13,5 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     endtime: DataTypes.DATE,
   });
 
+  Poll.associate = (PollOption) => {
+    Poll.hasMany(PollOption);
+  };
+
   return Poll;
 };
