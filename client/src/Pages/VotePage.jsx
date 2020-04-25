@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import styled from '@emotion/styled';
+import { useChannel, useEvent, usePusher } from '@harelpls/use-pusher';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { SpaceBetweenRow, VerticalList, WidthParent } from 'Utilities';
 import {
@@ -49,25 +50,26 @@ const PollPage = ({ match }) => {
   const [submit, setSubmit] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
   const [votedForText, setVotedForText] = useState(null);
+  const pusherChannel = useChannel(match.params.pollId);
+  const { client } = usePusher();
 
+  useEvent(
+    pusherChannel,
+    'voted',
+    () => {
+      getData(`/api/polls/${match.params.pollId}`, setPoll);
+    },
+    [],
+  );
   // Fetch our data on component mount
   useEffect(() => {
     // Intiial call for data
     getData(`/api/polls/${match.params.pollId}`, setPoll);
+    console.log(client.channels);
+  }, []);
 
-    // Start polling
-    let timer = 0;
-    const pollApi = () => {
-      getData(`/api/polls/${match.params.pollId}`, setPoll);
-      timer = setTimeout(pollApi, 1300);
-    };
-    timer = setTimeout(pollApi, 1300);
-
-    // Cancel polling on component unmount
-    return () => {
-      clearTimeout(timer);
-      timer = 0;
-    };
+  useEffect(() => () => {
+    client.unsubscribe(match.params.pollId);
   }, []);
 
   // Submit poll vote
@@ -79,7 +81,7 @@ const PollPage = ({ match }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ optionId: vote }),
+        body: JSON.stringify({ optionId: vote, pollId: match.params.pollId }),
       })
         .then((res) => res.json())
         .then((res) => {
