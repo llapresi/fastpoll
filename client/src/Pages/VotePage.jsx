@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import styled from '@emotion/styled';
-import { useChannel, useEvent, usePusher } from '@harelpls/use-pusher';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { SpaceBetweenRow, VerticalList, WidthParent } from 'Utilities';
 import {
   PollForm, Button, PageHeader, PageTitle, HeaderFlexRow,
 } from 'Components';
+import PusherContext from 'Contexts/PusherContext';
 
 const getData = (url, callback) => {
   fetch(url)
@@ -18,6 +18,7 @@ const FormButtons = styled(SpaceBetweenRow)`
   justify-content: flex-end;
   opacity: ${(props) => (props.hide ? 0 : 1)};
   transition: opacity 0.12s;
+  margin-top: 12px;
 `;
 
 const ResultsButton = styled(Button)`
@@ -47,55 +48,55 @@ const PollPage = ({ match }) => {
   // Hold our fetched poll in use state and use useEffect to load on mount
   const [poll, setPoll] = useState(null);
   const [vote, setVote] = useState(null);
-  const [submit, setSubmit] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
   const [votedForText, setVotedForText] = useState(null);
-  const pusherChannel = useChannel(match.params.pollId);
-  const { client } = usePusher();
+  const pusherContext = useContext(PusherContext);
+  const [subscribed, setSubscribed] = useState(false);
 
-  useEvent(
-    pusherChannel,
-    'voted',
-    () => {
-      getData(`/api/polls/${match.params.pollId}`, setPoll);
-    },
-    [],
-  );
   // Fetch our data on component mount
   useEffect(() => {
     // Intiial call for data
     getData(`/api/polls/${match.params.pollId}`, setPoll);
-    console.log(client.channels);
   }, []);
 
+  // Subscribe to our pusher channel when user votes
+  useEffect(() => {
+    if (hasVoted === true) {
+      const pusherChannel = pusherContext.subscribe(match.params.pollId);
+      setSubscribed(true);
+      pusherChannel.bind('voted', () => {
+        getData(`/api/polls/${match.params.pollId}`, setPoll);
+      });
+    }
+  }, [hasVoted]);
+
+  // Unsubscribe from our pusher channel when unmounting
   useEffect(() => () => {
-    client.unsubscribe(match.params.pollId);
+    if (subscribed === true) {
+      pusherContext.unsubscribe(match.params.pollId);
+    }
   }, []);
 
   // Submit poll vote
-  useEffect(() => {
-    // Vote = null is used as a 'toggle' to know when to run this command again
-    if (hasVoted === false && vote !== null) {
-      fetch('/api/vote/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ optionId: vote, pollId: match.params.pollId }),
+  const submitVote = (evt) => {
+    evt.preventDefault();
+    fetch('/api/vote/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ optionId: vote, pollId: match.params.pollId }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setVotedForText(res);
+        setHasVoted(true);
       })
-        .then((res) => res.json())
-        .then((res) => {
-          setVotedForText(res);
-          setHasVoted(true);
-        })
-        .then(() => {
-          // Poll for our data after we get confirmation that we voted from server
-          getData(`/api/polls/${match.params.pollId}`, setPoll);
-        });
-    } else {
-      setSubmit(false);
-    }
-  }, [submit]);
+      .then(() => {
+        // Poll for our data after we get confirmation that we voted from server
+        getData(`/api/polls/${match.params.pollId}`, setPoll);
+      });
+  };
 
   const titleElement = poll ? (
     <HeaderFlexRow>
@@ -112,7 +113,7 @@ const PollPage = ({ match }) => {
   );
 
   const formElement = poll ? (
-    <>
+    <form onSubmit={submitVote}>
       <PollForm
         poll={poll}
         selected={vote}
@@ -122,17 +123,13 @@ const PollPage = ({ match }) => {
       <FormButtons hide={hasVoted}>
         <ResultsButton
           type="button"
-          onClick={(e) => { setHasVoted(true); e.preventDefault(); }}
-          disabled={hasVoted || poll.totalVotes === 0}
+          onClick={(e) => { e.preventDefault(); setHasVoted(true); }}
+          disabled={hasVoted}
         >
           Results
         </ResultsButton>
         <Button
           type="submit"
-          onClick={(e) => {
-            setSubmit(true);
-            e.preventDefault();
-          }}
           disabled={vote === null || hasVoted}
         >
             Vote
@@ -140,7 +137,7 @@ const PollPage = ({ match }) => {
       </FormButtons>
       { /* Show vote message if not voted and there isn't a reponse */}
       <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
-    </>
+    </form>
   ) : (
     <>
       <div>

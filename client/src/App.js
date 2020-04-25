@@ -3,14 +3,10 @@ import styled from '@emotion/styled';
 import {
   BrowserRouter as Router,
 } from 'react-router-dom';
-import { PusherProvider } from '@harelpls/use-pusher';
+import Pusher from 'pusher-js';
 import { Toolbar } from 'Components';
 import Routes from './Routes';
-
-const pusherConfig = {
-  clientKey: process.env.REACT_APP_PUSHER_APP_KEY,
-  cluster: 'mt1',
-};
+import { PuhserProvider } from './Contexts/PusherContext';
 
 const AppContainer = styled.div`
   * {
@@ -20,16 +16,23 @@ const AppContainer = styled.div`
   }
 `;
 
+
+const pusherClient = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
+  cluster: 'mt1',
+  forceTLS: true,
+});
+
+
 function App() {
   return (
-    <PusherProvider clientKey={pusherConfig.clientKey} cluster={pusherConfig.cluster}>
+    <PuhserProvider value={pusherClient}>
       <AppContainer>
         <Router>
           <Toolbar />
           <Routes />
         </Router>
       </AppContainer>
-    </PusherProvider>
+    </PuhserProvider>
   );
 }
 

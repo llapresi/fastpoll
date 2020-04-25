@@ -79,11 +79,9 @@ const PollForm = ({
     />
   )) : <div />;
   return (
-    <form>
-      <VerticalList spacing="12">
-        {optionList}
-      </VerticalList>
-    </form>
+    <VerticalList spacing="12">
+      {optionList}
+    </VerticalList>
   );
 };
 

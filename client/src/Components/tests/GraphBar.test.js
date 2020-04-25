@@ -4,8 +4,8 @@ import { GraphBar } from 'Components';
 
 const testPollOption = {
   name: 'Test Option',
-  id: '2',
-  votes: '8',
+  id: 2,
+  votes: 8,
 };
 
 test('renders correct percentage of votes', () => {
