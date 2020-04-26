@@ -48,7 +48,10 @@ const PollPage = ({ match }) => {
   // Hold our fetched poll in use state and use useEffect to load on mount
   const [poll, setPoll] = useState(null);
   const [vote, setVote] = useState(null);
-  const [hasVoted, setHasVoted] = useState(false);
+  // Use local storage to check if we voted for an option before
+  const [hasVoted, setHasVoted] = useState(
+    (localStorage.getItem(match.params.pollId) !== null) || false,
+  );
   const [votedForText, setVotedForText] = useState(null);
   const pusherContext = useContext(PusherContext);
   const [subscribed, setSubscribed] = useState(false);
@@ -67,6 +70,11 @@ const PollPage = ({ match }) => {
       pusherChannel.bind('voted', () => {
         getData(`/api/polls/${match.params.pollId}`, setPoll);
       });
+
+      // Set voted for message if it's in localStorage
+      if (localStorage.getItem(match.params.pollId) !== null) {
+        setVotedForText(localStorage.getItem(match.params.pollId));
+      }
     }
   }, [hasVoted]);
 
@@ -91,6 +99,7 @@ const PollPage = ({ match }) => {
       .then((res) => {
         setVotedForText(res);
         setHasVoted(true);
+        localStorage.setItem(match.params.pollId, res);
       })
       .then(() => {
         // Poll for our data after we get confirmation that we voted from server
@@ -132,7 +141,7 @@ const PollPage = ({ match }) => {
           type="submit"
           disabled={vote === null || hasVoted}
         >
-            Vote
+          Vote
         </Button>
       </FormButtons>
       { /* Show vote message if not voted and there isn't a reponse */}
