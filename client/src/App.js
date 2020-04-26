@@ -6,7 +6,7 @@ import {
 import Pusher from 'pusher-js';
 import { Toolbar } from 'Components';
 import Routes from './Routes';
-import { PuhserProvider } from './Contexts/PusherContext';
+import { PusherProvider } from './Contexts/PusherContext';
 
 const AppContainer = styled.div`
   * {
@@ -25,14 +25,14 @@ const pusherClient = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
 
 function App() {
   return (
-    <PuhserProvider value={pusherClient}>
+    <PusherProvider value={pusherClient}>
       <AppContainer>
         <Router>
           <Toolbar />
           <Routes />
         </Router>
       </AppContainer>
-    </PuhserProvider>
+    </PusherProvider>
   );
 }
 
