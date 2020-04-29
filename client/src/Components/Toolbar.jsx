@@ -2,11 +2,12 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { WidthParent } from 'Utilities';
+import Palette from 'colors';
 
 const TitlebarBackground = styled.div`
   width: 100%;
   height: 60px;
-  background-color: rgb(2, 33, 36);
+  background-color: #${Palette[0].swatches[0].color};
   color: white;
 `;
 
