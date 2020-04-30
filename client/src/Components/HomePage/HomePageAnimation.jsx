@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from '@emotion/styled';
-import { keyframes } from '@emotion/core';
 import Palette from 'colors';
+import { gsap } from 'gsap';
 
-const bar1anim = keyframes`
-  0% { transform: scale(0.4, 1); }
-  25% {  transform: scale(0.2, 1); }
-  50% {  transform: scale(0.7, 1); }
-  75% {  transform: scale(0.5, 1); }
-  100% {  transform: scale(0.4, 1); }
-`;
+// Bar Graph positions for each keyframe of the home page animation
+// Access like:
+// animKeyframes[keyframeIndex][barNumber]
+const animKeyframes = [
+  [0.2, 0.4, 0.2],
+  [0.4, 0.53, 0.25],
+  [0.36, 0.57, 0.63],
+  [0.5, 0.5, 0.5],
+];
 
 const AnimationParent = styled.div`
   position: relative;
   width: 100%;
   max-width: 700px;
   margin: 0 auto;
+  margin-top: 24px;
 
   :before {
     content: '';
@@ -52,7 +55,7 @@ const PhoneScreen = styled.div`
 
 const Monitor = styled.div`
   position: absolute;
-  background-color: #${Palette[2].swatches[2].color};
+  background-color: #${Palette[1].swatches[2].color};
   width: 80%;
   right: 0px;
   height: 70%;
@@ -84,33 +87,70 @@ const BarShading = styled.div`
   bottom: 0;
   background-color: rgb(137, 206, 232);
   transform-origin: left center;
-  animation: ${bar1anim} 3s ease infinite;
+  transform: scale(0.5, 1);
 `;
 
 
-const HomePageAnimation = () => (
-  <AnimationParent>
-    <AnimationParentInner>
-      <Monitor>
-        <MonitorScreen>
-          <GraphBar>
-            <BarShading />
-          </GraphBar>
-          <GraphBar />
-          <GraphBar />
-        </MonitorScreen>
-      </Monitor>
-      <Phone>
-        <PhoneScreen>
-          <GraphBar>
-            <BarShading />
-          </GraphBar>
-          <GraphBar />
-          <GraphBar />
-        </PhoneScreen>
-      </Phone>
-    </AnimationParentInner>
-  </AnimationParent>
-);
+const HomePageAnimation = () => {
+  const monitorBar1 = useRef(null);
+  const monitorBar2 = useRef(null);
+  const monitorBar3 = useRef(null);
+
+  const phoneBar1 = useRef(null);
+  const phoneBar2 = useRef(null);
+  const phoneBar3 = useRef(null);
+
+  const [barsAnimation] = useState(gsap.timeline({ repeat: -1 }));
+
+  useEffect(() => {
+    // Iterate our keyframes index to build the animation
+    for (let i = 0; i < animKeyframes.length; i += 1) {
+      barsAnimation
+        .to(monitorBar1.current, 1, { scaleX: animKeyframes[i][0] })
+        .to(phoneBar1.current, 1, { scaleX: animKeyframes[i][0] }, '-=1')
+        .to(monitorBar2.current, 1, { scaleX: animKeyframes[i][1] }, '-=1')
+        .to(phoneBar2.current, 1, { scaleX: animKeyframes[i][1] }, '-=1')
+        .to(monitorBar3.current, 1, { scaleX: animKeyframes[i][2] }, '-=1')
+        .to(phoneBar3.current, 1, { scaleX: animKeyframes[i][2] }, '-=1');
+    }
+
+    return () => {
+      barsAnimation.kill();
+    };
+  }, []);
+
+  return (
+    <AnimationParent>
+      <AnimationParentInner>
+        <Monitor>
+          <MonitorScreen>
+            <GraphBar>
+              <BarShading ref={monitorBar1} />
+            </GraphBar>
+            <GraphBar>
+              <BarShading ref={monitorBar2} />
+            </GraphBar>
+            <GraphBar>
+              <BarShading ref={monitorBar3} />
+            </GraphBar>
+          </MonitorScreen>
+        </Monitor>
+        <Phone>
+          <PhoneScreen>
+            <GraphBar>
+              <BarShading ref={phoneBar1} />
+            </GraphBar>
+            <GraphBar>
+              <BarShading ref={phoneBar2} />
+            </GraphBar>
+            <GraphBar>
+              <BarShading ref={phoneBar3} />
+            </GraphBar>
+          </PhoneScreen>
+        </Phone>
+      </AnimationParentInner>
+    </AnimationParent>
+  );
+};
 
 export default HomePageAnimation;
