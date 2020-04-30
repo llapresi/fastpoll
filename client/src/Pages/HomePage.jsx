@@ -5,7 +5,8 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Link } from 'react-router-dom';
 import Palette from 'colors';
-import HomePageAnimation from 'Components/HomePage/HomePageAnimation';
+import { HomePageAnimation } from 'Components/HomePage';
+import { HomePageCopy } from 'Content';
 
 const HeroBanner = styled.div`
   width: 100%;
@@ -39,18 +40,6 @@ const MaxWidthCenter = styled.div`
   padding: 24px;
 `;
 
-const FeatureParagraph = styled.p`
-  display: block;
-  font-size: 16px;
-  flex: 1;
-  margin-bottom: 36px;
-`;
-
-const FeatureHeader = styled.h2`
-  color #${Palette[0].swatches[0].color};
-  margin-bottom: 12px;
-`;
-
 const HomePage = () => (
   <div css={css`display: flex; flex-direction: column; width: 100%;`}>
     <HeroBanner>
@@ -63,47 +52,7 @@ const HomePage = () => (
       </MaxWidthCenter>
     </HeroBanner>
     <MaxWidthCenter>
-      <FeatureHeader>Create Polls In A Snap</FeatureHeader>
-      <FeatureParagraph>
-        <div css={css`position:relative; padding-bottom:calc(46.88% + 44px); margin-bottom: 12px;`}>
-          <iframe
-            title="Fastpoll voting video"
-            src="https://gfycat.com/ifr/illinformedquarterlyiggypops"
-            frameBorder="0"
-            scrolling="no"
-            width="100%"
-            height="100%"
-            css={css`position:absolute;top:0;left:0;`}
-            allowFullScreen
-          />
-        </div>
-        Fastpoll allows you to easily create a poll. Simply set a name, then type in your
-        poll&apos;s options and instantly create a live poll.
-      </FeatureParagraph>
-
-      <FeatureHeader>See Results As They Come In</FeatureHeader>
-      <FeatureParagraph>
-        <div css={css`position:relative; padding-bottom:calc(46.88% + 44px); margin-bottom: 12px;`}>
-          <iframe
-            title="Fastpoll voting video"
-            src="https://gfycat.com/ifr/DentalAfraidGermanpinscher"
-            frameBorder="0"
-            scrolling="no"
-            width="100%"
-            height="100%"
-            css={css`position:absolute;top:0;left:0;`}
-            allowFullScreen
-          />
-        </div>
-        Fastpoll uses&nbsp;
-        <a href="https://pusher.com/channels">Pusher Channels</a>
-        &nbsp;to allow users to see poll results update in realtime as votes are cast.
-      </FeatureParagraph>
-
-      <FeatureHeader>Battle-Tested Foundations</FeatureHeader>
-      <FeatureParagraph>
-        Fastpoll is developed, tested and deployed using industry standard tools.
-      </FeatureParagraph>
+      <HomePageCopy />
     </MaxWidthCenter>
   </div>
 );
