@@ -22,7 +22,7 @@ const IconParent = styled.div`
   border-radius: 50%;
   width: 80px;
   height: 80px;
-  background-color: #${Palette[0].swatches[0].color};
+  background-color: #${Palette[0].swatches[1].color};
   color: white;
   display: inline-flex;
   align-items: center;
@@ -54,7 +54,7 @@ const HomePageCopy = () => (
       <div css={css`position:relative; padding-bottom:calc(46.88% + 44px); margin-bottom: 12px;`}>
         <iframe
           title="Fastpoll voting video"
-          src="https://gfycat.com/ifr/illinformedquarterlyiggypops"
+          src="https://gfycat.com/ifr/illinformedquarterlyiggypops?autoplay=0"
           frameBorder="0"
           scrolling="no"
           width="100%"
@@ -63,8 +63,10 @@ const HomePageCopy = () => (
           allowFullScreen
         />
       </div>
-      Fastpoll allows you to easily create a poll. Simply set a name, then type in your
-      poll&apos;s options and instantly create a live poll.
+      <p>
+        Fastpoll allows you to easily create a poll. Simply set a name, then type in your
+        poll&apos;s options and instantly create a live poll.
+      </p>
     </FeatureParagraph>
 
     <FeatureHeader>See Results As They Come In</FeatureHeader>
@@ -72,7 +74,7 @@ const HomePageCopy = () => (
       <div css={css`position:relative; padding-bottom:calc(46.88% + 44px); margin-bottom: 12px;`}>
         <iframe
           title="Fastpoll voting video"
-          src="https://gfycat.com/ifr/DentalAfraidGermanpinscher"
+          src="https://gfycat.com/ifr/DentalAfraidGermanpinscher?autoplay=0"
           frameBorder="0"
           scrolling="no"
           width="100%"
@@ -81,14 +83,19 @@ const HomePageCopy = () => (
           allowFullScreen
         />
       </div>
-      Fastpoll uses&nbsp;
-      <a href="https://pusher.com/channels">Pusher Channels</a>
-      &nbsp;to allow users to see poll results update in realtime as votes are cast.
+      <p>
+        Fastpoll uses&nbsp;
+        <a href="https://pusher.com/channels">Pusher Channels</a>
+        &nbsp;to allow users to see poll results update in realtime as votes are cast.
+      </p>
     </FeatureParagraph>
 
     <FeatureHeader>Battle-Tested Foundations</FeatureHeader>
     <FeatureParagraph>
-      Fastpoll is developed, tested and deployed using industry standard tools.
+      <p css={css`margin-bottom: 0px;`}>
+        Fastpoll is developed, tested and
+        deployed using industry standard tools.
+      </p>
       <div css={css`display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));`}>
         <div>
           <TechnologyHeader>Front-End</TechnologyHeader>
@@ -135,6 +142,15 @@ const HomePageCopy = () => (
           </TechnologyListParent>
         </div>
       </div>
+    </FeatureParagraph>
+
+    <FeatureHeader>Open Source</FeatureHeader>
+    <FeatureParagraph>
+      <p>
+        Fastpoll is an open-source project and its development is&nbsp;
+        <a href="https://github.com/llapresi/fastpoll">publically visible on GitHub</a>
+        &nbsp;to allow users to see poll results update in realtime as votes are cast.
+      </p>
     </FeatureParagraph>
   </>
 );

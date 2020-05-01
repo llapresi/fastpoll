@@ -29,7 +29,7 @@ function App() {
       <AppContainer>
         <Router>
           <Toolbar />
-          <Routes />
+          <div style={{ marginTop: '60px' }}><Routes /></div>
         </Router>
       </AppContainer>
     </PusherProvider>

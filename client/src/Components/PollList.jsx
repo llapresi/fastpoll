@@ -42,10 +42,7 @@ const PollList = () => {
     pollElements.push(newElement);
   }
   return (
-    <div>
-      <h1>Polls:</h1>
-      <VerticalList spacing="16">{pollElements}</VerticalList>
-    </div>
+    <VerticalList spacing="16">{pollElements}</VerticalList>
   );
 };
 
