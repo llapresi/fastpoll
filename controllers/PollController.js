@@ -10,6 +10,8 @@ const createPoll = (req, res) => {
       urlId: shortid.generate(),
       endtime: Date.now() + (req.body.endtime * 1000),
       PollOptions: req.body.options,
+      // Stop users from being able to create public polls for now
+      isPublic: false,
     }, {
       include: [PollOption],
       transaction: t,
@@ -19,7 +21,7 @@ const createPoll = (req, res) => {
     .catch((err) => res.status(400).json(err));
 };
 
-// Return polls for id
+// Return poll that has given urlId
 const findPollById = (req, res) => {
   Poll.findOne({
     where: { urlId: req.params.id },
@@ -37,10 +39,13 @@ const findPollById = (req, res) => {
     .catch((err) => res.status(404).send(err.message));
 };
 
-// Return all polls
+// Return all public polls
 const getPolls = (req, res) => {
   Poll.findAll({
-    attributes: ['id', 'name', 'urlId'],
+    attributes: ['id', 'name', 'urlId', 'isPublic'],
+    where: {
+      isPublic: true,
+    },
   })
     .then((polls) => res.json(polls))
     .catch((err) => res.status(404).json(err.message));
