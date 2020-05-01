@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import Palette from 'colors';
 
 const TitlebarBackground = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 60px;
   background-color: #${Palette[0].swatches[0].color};
   color: white;
@@ -23,6 +23,7 @@ const TitlebarParent = styled.nav`
 `;
 
 const Title = styled(NavLink)`
+  position: relative;
   font-size: 24px;
   font-weight: 600;
   color: white;
@@ -35,14 +36,27 @@ const Title = styled(NavLink)`
   padding-left: 8px;
   padding-right: 8px;
   height: 100%;
-  padding-top: 17px;
+  line-height: 60px;
 
-  &:hover {
-    border-bottom: 3px solid #${Palette[0].swatches[2].color};
+  &:after {
+    content: '';
+    position: absolute;
+    height: 5px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #${Palette[0].swatches[2].color};
+    transform: scaleX(0);
+    transition: all ease-out .2s;
   }
 
-  &.selected {
-    border-bottom: 3px solid #${Palette[0].swatches[4].color};
+  &:hover:after {
+    transform: scaleX(1);
+  }
+
+  &.selected:after {
+    background-color: #${Palette[0].swatches[5].color};
+    transform: scaleX(1);
   }
 `;
 
@@ -53,15 +67,33 @@ const HeaderLink = styled(NavLink)`
   padding-right: 6px;
   height: 100%;
   vertical-align: center;
-  padding-top: 21px;
+  line-height: 60px;
+  position: relative;
 
-  &:hover {
-    border-bottom: 3px solid #${Palette[0].swatches[2].color};
-  }
 
   &.selected {
-    border-bottom: 3px solid #${Palette[0].swatches[4].color};
     color: #${Palette[0].swatches[4].color};
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    height: 5px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #${Palette[0].swatches[2].color};
+    transform: scaleX(0);
+    transition: all ease-out .2s;
+  }
+
+  &:hover:after {
+    transform: scaleX(1);
+  }
+
+  &.selected:after {
+    background-color: #${Palette[0].swatches[5].color};
+    transform: scaleX(1);
   }
 `;
 

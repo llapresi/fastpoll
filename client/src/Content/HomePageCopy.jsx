@@ -148,7 +148,7 @@ const HomePageCopy = () => (
     <FeatureParagraph>
       <p>
         Fastpoll is an open-source project and its development is&nbsp;
-        <a href="https://github.com/llapresi/fastpoll">publically visible on GitHub</a>
+        <a href="https://github.com/llapresi/fastpoll">publicly visible on GitHub</a>
         &nbsp;to allow users to see poll results update in realtime as votes are cast.
       </p>
     </FeatureParagraph>
