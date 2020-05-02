@@ -2,8 +2,10 @@ import React from 'react';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
 import { FetchMock } from '@react-mock/fetch';
 import { MemoryRouter } from 'react-router-dom';
+import { PusherMock } from 'pusher-js-mock';
 import { testPoll } from 'Utilities/testData';
 import { VotePage } from 'Pages';
+import { PusherProvider } from 'Contexts/PusherContext';
 
 // provided to PollPage component as mock poll id
 const match = {
@@ -13,6 +15,8 @@ const match = {
 };
 
 test('fetches poll on component mount and renders correctly', async () => {
+  const pusher = new PusherMock();
+
   // Setup mock callback
   const { getByText } = render(
     <FetchMock
@@ -20,9 +24,11 @@ test('fetches poll on component mount and renders correctly', async () => {
         { matcher: '/api/polls/roflcopter', method: 'GET', response: testPoll },
       ]}
     >
-      <MemoryRouter>
-        <VotePage match={match} />
-      </MemoryRouter>
+      <PusherProvider value={pusher}>
+        <MemoryRouter>
+          <VotePage match={match} />
+        </MemoryRouter>
+      </PusherProvider>
     </FetchMock>,
   );
   // Test if bars render
@@ -32,6 +38,8 @@ test('fetches poll on component mount and renders correctly', async () => {
 });
 
 test('Posts a vote to server and renders a response', async () => {
+  const pusher = new PusherMock();
+
   // Setup mock callback
   const { getByText, getByLabelText } = render(
     <FetchMock
@@ -40,9 +48,11 @@ test('Posts a vote to server and renders a response', async () => {
         { matcher: '/api/vote/', method: 'POST', response: '"You voted for Option Whatever"' },
       ]}
     >
-      <MemoryRouter>
-        <VotePage match={match} />
-      </MemoryRouter>
+      <PusherProvider value={pusher}>
+        <MemoryRouter>
+          <VotePage match={match} />
+        </MemoryRouter>
+      </PusherProvider>
     </FetchMock>,
   );
   // Test if click event works

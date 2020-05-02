@@ -11,7 +11,6 @@ const BarFlexContainer = styled(SpaceBetweenRow)`
   padding: 12px;
   transform: translateX(${(props) => (props.selected ? '0px' : '-8px')});
   transition: transform 0.14s;
-  will-change: transform;
 `;
 
 const BarShading = styled.div`
@@ -25,7 +24,6 @@ const BarShading = styled.div`
   background-color: ${(props) => props.color};
   transition-timing-function: ease-out;
   transition-delay: ${(props) => props.delay};
-  will-change: transform, box-shadow;
   box-shadow: ${(props) => {
     const opacity = props.focused && !props.showResults ? 0.18 : 0;
     return `inset 0 3px 30px rgba(0,0,0, ${opacity}), inset 0 3px 8px rgba(0,0,0, ${opacity})`;
@@ -52,7 +50,6 @@ const BarInfo = styled.span`
   transition: opacity 0.7s;
   transition-timing-function: ease-out;
   transition-delay: 0.13s;
-  will-change: opacity;
 `;
 
 const BarPercentage = styled.h3`
@@ -77,7 +74,6 @@ const Bar = styled.div`
     return '12px';
   }};
   overflow: hidden;
-  will-change: border-radius, transform;
 `;
 
 const GraphBar = ({

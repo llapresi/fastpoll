@@ -3,8 +3,10 @@ import styled from '@emotion/styled';
 import {
   BrowserRouter as Router,
 } from 'react-router-dom';
+import Pusher from 'pusher-js';
 import { Toolbar } from 'Components';
 import Routes from './Routes';
+import { PusherProvider } from './Contexts/PusherContext';
 
 const AppContainer = styled.div`
   * {
@@ -14,14 +16,23 @@ const AppContainer = styled.div`
   }
 `;
 
+
+const pusherClient = new Pusher(process.env.REACT_APP_PUSHER_APP_KEY, {
+  cluster: 'mt1',
+  forceTLS: true,
+});
+
+
 function App() {
   return (
-    <AppContainer>
-      <Router>
-        <Toolbar />
-        <Routes />
-      </Router>
-    </AppContainer>
+    <PusherProvider value={pusherClient}>
+      <AppContainer>
+        <Router>
+          <Toolbar />
+          <div style={{ marginTop: '60px' }}><Routes /></div>
+        </Router>
+      </AppContainer>
+    </PusherProvider>
   );
 }
 

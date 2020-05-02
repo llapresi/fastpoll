@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -101,43 +101,38 @@ const CreatePollPage = () => {
   const [options, setOptions] = useState(['first', 'second']);
   const [pollName, setPollName] = useState('');
 
-  // When set to true, component makes POST to polls to make the new poll
-  const [shouldSubmit, setShouldSubmit] = useState(false);
-
   // Stores page to redirect to when our poll is submitted
   const [redirectUrl, setRedirectUrl] = useState(null);
 
   // Display error message:
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    if (shouldSubmit) {
-      const optionsObj = options.map((name) => (
-        { name }
-      ));
-      const toSend = {
-        name: pollName,
-        endtime: 120000,
-        options: optionsObj,
-      };
-      fetch('/api/polls/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(toSend),
+  function onSubmit(e) {
+    e.preventDefault();
+    const optionsObj = options.map((name) => (
+      { name }
+    ));
+    const toSend = {
+      name: pollName,
+      endtime: 120000,
+      options: optionsObj,
+    };
+    fetch('/api/polls/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(toSend),
+    })
+      .then(handleErrors)
+      .then((res) => res.json())
+      .then((res) => {
+        setRedirectUrl(res.urlId);
       })
-        .then(handleErrors)
-        .then((res) => res.json())
-        .then((res) => {
-          setRedirectUrl(res.urlId);
-        })
-        .catch((err) => {
-          setErrorMessage(err.toString());
-          setShouldSubmit(false);
-        });
-    }
-  }, [shouldSubmit]);
+      .catch((err) => {
+        setErrorMessage(err.toString());
+      });
+  }
 
   // Create a textbox and button for each of our poll options
   const inputElements = options.map((elm, index) => (
@@ -149,7 +144,7 @@ const CreatePollPage = () => {
     />
   ));
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <PageHeader>
         <WidthParent>
           <HeaderFlexRow>
@@ -164,7 +159,7 @@ const CreatePollPage = () => {
           </VerticalList>
           <SpaceBetweenRow>
             <SecondaryButton type="button" onClick={(() => addOption(options, setOptions))}>+ Add Option</SecondaryButton>
-            <Button type="submit" onClick={(() => setShouldSubmit(true))}>Submit</Button>
+            <Button type="submit">Submit</Button>
           </SpaceBetweenRow>
           <div>
             {errorMessage}
@@ -172,7 +167,7 @@ const CreatePollPage = () => {
           {redirectUrl !== null ? <Redirect to={`/poll/${redirectUrl}`} /> : null }
         </VerticalList>
       </PollParent>
-    </>
+    </form>
   );
 };
 

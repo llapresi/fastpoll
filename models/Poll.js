@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     urlId: DataTypes.STRING,
     endtime: DataTypes.DATE,
+    isPublic: DataTypes.BOOLEAN,
   });
 
   Poll.associate = (PollOption) => {
