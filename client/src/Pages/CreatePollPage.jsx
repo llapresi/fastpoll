@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import {
   VerticalList, SpaceBetweenRow, handleErrors, WidthParent,
 } from 'Utilities';
 
 import {
-  Button, SecondaryButton, PageHeader, HeaderFlexRow,
+  Button, SecondaryButton, PageHeader,
 } from 'Components';
 
 const NameTextbox = styled.input`
@@ -63,57 +65,51 @@ const PollParent = styled(WidthParent)`
   margin-top: -48px;
 `;
 
-// Functions used to update the array of poll options in the state
-const updateOption = (index, options, newVal, callback) => {
-  const newArray = [...options];
-  newArray[index] = newVal;
-  callback(newArray);
-};
+const PollNameRow = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-const addOption = (options, callback) => {
-  const newArray = [...options];
-  newArray.push('new option');
-  callback(newArray);
-};
-
-const removeOption = (index, options, callback) => {
-  const newArray = [...options];
-  newArray.splice(index, 1);
-  callback(newArray);
-};
-
-// Pairs a OptionTextbox and a PollButton for removal in one component
-const OptionInput = ({ value, onChange, onRemove }) => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <OptionTextbox type="text" value={value} onChange={onChange} />
-    <RemoveButton type="button" onClick={onRemove}>-</RemoveButton>
-  </div>
+const ErrorIcon = ({ msg }) => (
+  <BsFillExclamationCircleFill fontSize="24px" title={msg} style={{ marginRight: '6px' }} color="#ff6161" />
 );
 
-OptionInput.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
+ErrorIcon.propTypes = {
+  msg: PropTypes.string.isRequired,
 };
 
 const CreatePollPage = () => {
-  // Stores name of our poll and our poll options
-  const [options, setOptions] = useState(['first', 'second']);
-  const [pollName, setPollName] = useState('');
-
   // Stores page to redirect to when our poll is submitted
   const [redirectUrl, setRedirectUrl] = useState(null);
 
   // Display error message:
   const [errorMessage, setErrorMessage] = useState('');
 
-  function onSubmit(e) {
-    e.preventDefault();
-    const optionsObj = options.map((name) => (
+  // Setup react-hook-form
+  const {
+    register, control, handleSubmit, errors,
+  } = useForm({
+    defaultValues: {
+      options: [
+        '',
+        '',
+      ],
+    },
+  });
+
+  // Use useFieldArray for poll options
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'options',
+  });
+
+  function onSubmit(data) {
+    console.log(data);
+    const optionsObj = data.options.map((name) => (
       { name }
     ));
     const toSend = {
-      name: pollName,
+      name: data.name,
       endtime: 120000,
       options: optionsObj,
     };
@@ -135,21 +131,25 @@ const CreatePollPage = () => {
   }
 
   // Create a textbox and button for each of our poll options
-  const inputElements = options.map((elm, index) => (
-    <OptionInput
-      value={elm}
-      key={index}
-      onChange={(e) => updateOption(index, options, e.target.value, setOptions)}
-      onRemove={() => removeOption(index, options, setOptions)}
-    />
-  ));
+  const inputElements = (
+    <>
+      {fields.map((item, index) => (
+        <div key={item.id} style={{ display: 'flex', alignItems: 'center' }}>
+          {(errors.options && errors.options[index]) && <ErrorIcon msg="Poll Option name is required" />}
+          <OptionTextbox type="text" placeholder="New Option Name:" name={`options[${index}]`} ref={register({ required: true })} />
+          <RemoveButton type="button" onClick={() => remove(index)}>-</RemoveButton>
+        </div>
+      ))}
+    </>
+  );
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <PageHeader>
         <WidthParent>
-          <HeaderFlexRow>
-            <NameTextbox placeholder="New Poll Name:" type="text" value={pollName} onChange={(e) => setPollName(e.target.value)} />
-          </HeaderFlexRow>
+          <PollNameRow>
+            {errors.name && <ErrorIcon msg="Poll Name is a required field" /> }
+            <NameTextbox placeholder="New Poll Name:" type="text" name="name" ref={register({ required: true })} />
+          </PollNameRow>
         </WidthParent>
       </PageHeader>
       <PollParent>
@@ -158,7 +158,7 @@ const CreatePollPage = () => {
             {inputElements}
           </VerticalList>
           <SpaceBetweenRow>
-            <SecondaryButton type="button" onClick={(() => addOption(options, setOptions))}>+ Add Option</SecondaryButton>
+            <SecondaryButton type="button" onClick={() => append({ name: '' })}>+ Add Option</SecondaryButton>
             <Button type="submit">Submit</Button>
           </SpaceBetweenRow>
           <div>

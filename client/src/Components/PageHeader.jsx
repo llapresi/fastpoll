@@ -9,7 +9,7 @@ const PageHeader = styled.div`
   padding-bottom: 60px;
 
   @media (max-width: 600px) {
-    padding-top: 0px;
+    padding-top: 18px;
     padding-bottom: 56px;
   }
 `;
