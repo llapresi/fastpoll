@@ -104,7 +104,6 @@ const CreatePollPage = () => {
   });
 
   function onSubmit(data) {
-    console.log(data);
     const optionsObj = data.options.map((name) => (
       { name }
     ));
@@ -135,8 +134,23 @@ const CreatePollPage = () => {
     <>
       {fields.map((item, index) => (
         <div key={item.id} style={{ display: 'flex', alignItems: 'center' }}>
-          {(errors.options && errors.options[index]) && <ErrorIcon msg="Poll Option name is required" />}
-          <OptionTextbox type="text" placeholder="New Option Name:" name={`options[${index}]`} ref={register({ required: true })} />
+          {(errors.options && errors.options[index])
+             && <ErrorIcon msg={errors.options[index].message} /> }
+          <OptionTextbox
+            type="text"
+            placeholder="New Option Name:"
+            name={`options[${index}]`}
+            ref={register({
+              required: {
+                value: true,
+                message: 'Poll Option name is required',
+              },
+              maxLength: {
+                value: 60,
+                message: 'Maximum option name length is 60 characters',
+              },
+            })}
+          />
           <RemoveButton type="button" onClick={() => remove(index)}>-</RemoveButton>
         </div>
       ))}
@@ -147,8 +161,22 @@ const CreatePollPage = () => {
       <PageHeader>
         <WidthParent>
           <PollNameRow>
-            {errors.name && <ErrorIcon msg="Poll Name is a required field" /> }
-            <NameTextbox placeholder="New Poll Name:" type="text" name="name" ref={register({ required: true })} />
+            {errors.name && <ErrorIcon msg={errors.name.message} /> }
+            <NameTextbox
+              placeholder="New Poll Name:"
+              type="text"
+              name="name"
+              ref={register({
+                required: {
+                  value: true,
+                  message: 'Poll name is required',
+                },
+                maxLength: {
+                  value: 60,
+                  message: 'Maximum poll name length is 60 characters',
+                },
+              })}
+            />
           </PollNameRow>
         </WidthParent>
       </PageHeader>

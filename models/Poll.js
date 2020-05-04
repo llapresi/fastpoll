@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: { args: true, msg: 'Poll name cannot be empty' },
-        len: { args: [0, 30], msg: 'Poll name max length is 30 characters' },
+        len: { args: [0, 60], msg: 'Poll name max length is 60 characters' },
       },
       trim: true,
     },
