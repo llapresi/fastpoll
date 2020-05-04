@@ -11,7 +11,7 @@ import {
 } from 'Utilities';
 
 import {
-  Button, SecondaryButton, PageHeader,
+  Button, SecondaryButton, PageHeader, AddPollOption,
 } from 'Components';
 
 const NameTextbox = styled.input`
@@ -29,34 +29,7 @@ const NameTextbox = styled.input`
   @media (max-width: 600px) {
     font-size: 36px;
   }
-`;
-
-const OptionTextbox = styled.input`
-  height: 80px;
-  flex-grow: 1;
-  min-width: 0px;
-  background-color: #d6d6d6;
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  font-weight: 400;
-  font-size: 1.5em;
-
-  :focus {
-    box-shadow: inset 0 3px 30px rgba(0,0,0, 0.18), inset 0 3px 8px rgba(0,0,0, 0.18);
-  }
-
-  transition: box-shadow 0.13s ease-out;
-`;
-
-const RemoveButton = styled(SecondaryButton)`
-  width: 35px;
-  height: 35px;
-  font-size: 1.2em;
-  font-weight: bold;
-  padding: 0;
-  border-radius: 50%;
-  flex-shrink 0;
+  border: ${(props) => props.errorHighlight ? '2px #ff4545 solid' : '2px transparent solid'}
 `;
 
 const PollParent = styled(WidthParent)`
@@ -133,26 +106,13 @@ const CreatePollPage = () => {
   const inputElements = (
     <>
       {fields.map((item, index) => (
-        <div key={item.id} style={{ display: 'flex', alignItems: 'center' }}>
-          {(errors.options && errors.options[index])
-             && <ErrorIcon msg={errors.options[index].message} /> }
-          <OptionTextbox
-            type="text"
-            placeholder="New Option Name:"
-            name={`options[${index}]`}
-            ref={register({
-              required: {
-                value: true,
-                message: 'Poll Option name is required',
-              },
-              maxLength: {
-                value: 60,
-                message: 'Maximum option name length is 60 characters',
-              },
-            })}
-          />
-          <RemoveButton type="button" onClick={() => remove(index)}>-</RemoveButton>
-        </div>
+        <AddPollOption
+          key={item.id}
+          index={index}
+          errors={errors}
+          register={register}
+          onRemove={() => remove(index)}
+        />
       ))}
     </>
   );
@@ -161,7 +121,6 @@ const CreatePollPage = () => {
       <PageHeader>
         <WidthParent>
           <PollNameRow>
-            {errors.name && <ErrorIcon msg={errors.name.message} /> }
             <NameTextbox
               placeholder="New Poll Name:"
               type="text"
@@ -176,8 +135,15 @@ const CreatePollPage = () => {
                   message: 'Maximum poll name length is 60 characters',
                 },
               })}
+              errorHighlight={errors.name !== undefined}
             />
           </PollNameRow>
+          <p style={{
+            color: '#ff4545', marginTop: '6px', marginBottom: '0px', visibility: errors.name !== undefined ? 'visible' : 'hidden',
+          }}
+          >
+            {errors.name !== undefined ? errors.name.message : 'No Error'}
+          </p>
         </WidthParent>
       </PageHeader>
       <PollParent>
