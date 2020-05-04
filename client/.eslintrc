@@ -13,5 +13,6 @@
         "moduleDirectory": ["node_modules", "src/"]
       }
     }
-  }
+  },
+  "root": true
 }
