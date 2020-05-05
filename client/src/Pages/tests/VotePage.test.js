@@ -64,3 +64,28 @@ test('Posts a vote to server and renders a response', async () => {
   // Test of poll title renders
   await waitForElement(() => getByText('You voted for Option Whatever'));
 });
+
+test('Does not post a vote to server if no option is selected', async () => {
+  const pusher = new PusherMock();
+
+  // Setup mock callback
+  const { getByText, getByLabelText } = render(
+    <FetchMock
+      mocks={[
+        { matcher: '/api/polls/roflcopter', method: 'GET', response: testPoll },
+        { matcher: '/api/vote/', method: 'POST', response: '"You voted for Option Whatever"' },
+      ]}
+    >
+      <PusherProvider value={pusher}>
+        <MemoryRouter>
+          <VotePage match={match} />
+        </MemoryRouter>
+      </PusherProvider>
+    </FetchMock>,
+  );
+  // Test if click event works
+  await waitForElement(() => getByLabelText(/Option Whatever/i));
+  fireEvent.click(getByText('Vote'));
+  // Test of poll title renders
+  expect(getByText('Vote').closest('button')).toHaveAttribute('disabled');
+});

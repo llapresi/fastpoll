@@ -42,8 +42,9 @@ const AddPollOption = ({
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <OptionTextbox
         type="text"
-        placeholder="New Option Name:"
+        placeholder={`Option ${index + 1} Name`}
         name={`options[${index}]`}
+        title={`Option ${index + 1} Name`}
         ref={register({
           required: {
             value: true,
@@ -56,7 +57,7 @@ const AddPollOption = ({
         })}
         errorHighlight={(errors.options && errors.options[index]) !== undefined}
       />
-      <RemoveButton type="button" onClick={onRemove}>-</RemoveButton>
+      <RemoveButton type="button" title={`Remove Option ${index + 1}`} onClick={onRemove}>-</RemoveButton>
     </div>
     <ErrorMessage
       errors={errors}
