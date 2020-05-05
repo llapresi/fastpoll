@@ -1,9 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitForElement } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { FetchMock } from '@react-mock/fetch';
 import { CreatePollPage } from 'Pages';
-import { testPoll } from 'Utilities/testData';
 
 test('renders CreatePollPage correctly', async () => {
   // Setup mock callback
@@ -21,15 +19,9 @@ test('Adds and removes new poll options', async () => {
   const {
     getByText, getByTitle, getAllByPlaceholderText,
   } = render(
-    <FetchMock
-      mocks={[
-        { matcher: '/api/polls/', method: 'POST', response: { urlId: testPoll.urlId } },
-      ]}
-    >
-      <MemoryRouter>
-        <CreatePollPage />
-      </MemoryRouter>
-    </FetchMock>,
+    <MemoryRouter>
+      <CreatePollPage />
+    </MemoryRouter>,
   );
   // Test if we start with two poll options
   await waitForElement(() => getByText(/Add Option/i));
@@ -49,15 +41,9 @@ test('Shows poll name validation errors', async () => {
   const {
     getByText, getByPlaceholderText,
   } = render(
-    <FetchMock
-      mocks={[
-        { matcher: '/api/polls/', method: 'POST', response: { urlId: testPoll.urlId } },
-      ]}
-    >
-      <MemoryRouter>
-        <CreatePollPage />
-      </MemoryRouter>
-    </FetchMock>,
+    <MemoryRouter>
+      <CreatePollPage />
+    </MemoryRouter>,
   );
   // Test if empty poll name returns proper message
   await waitForElement(() => getByText(/Add Option/i));
@@ -76,15 +62,9 @@ test('Shows poll option validation errors', async () => {
   const {
     getByText, getByPlaceholderText,
   } = render(
-    <FetchMock
-      mocks={[
-        { matcher: '/api/polls/', method: 'POST', response: { urlId: testPoll.urlId } },
-      ]}
-    >
-      <MemoryRouter>
-        <CreatePollPage />
-      </MemoryRouter>
-    </FetchMock>,
+    <MemoryRouter>
+      <CreatePollPage />
+    </MemoryRouter>,
   );
   // Test if empty poll option name returns proper message
   await waitForElement(() => getByText(/Add Option/i));
