@@ -17,7 +17,11 @@ const OptionList = ({
         index={index}
         errors={errors}
         register={register}
-        onRemove={() => remove(index)}
+        onRemove={() => {
+          if (options.length >= 3) {
+            remove(index);
+          }
+        }}
       />
     ))}
   </VerticalList>
