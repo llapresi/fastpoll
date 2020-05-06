@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { SkeletonTheme } from 'react-loading-skeleton';
 import styled from '@emotion/styled';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { SpaceBetweenRow, VerticalList, WidthParent } from 'Utilities';
-import {
-  PollForm, Button, PageHeader, PageTitle, HeaderFlexRow,
-} from 'Components';
+import { VerticalList, WidthParent } from 'Utilities';
+import { PageHeader } from 'Components';
+import { PollHeader, VoteForm } from 'Components/VotePoll';
 import PusherContext from 'Contexts/PusherContext';
 
 const getData = (url, callback) => {
@@ -14,33 +13,10 @@ const getData = (url, callback) => {
     .then((res) => callback(res));
 };
 
-const FormButtons = styled(SpaceBetweenRow)`
-  justify-content: flex-end;
-  opacity: ${(props) => (props.hide ? 0 : 1)};
-  transition: opacity 0.12s;
-  margin-top: 12px;
-`;
-
-const ResultsButton = styled(Button)`
-  background-color: transparent;
-  border: 1px solid rgb(30, 41, 41);
-  border-radius: 12px;
-  color: black;
-
-  :hover:enabled,
-  :focus:enabled {
-      background: rgb(237, 240, 240);
-  }
-`;
-
 const PollParent = styled(WidthParent)`
   background-color: white;
   padding: 18px;
   margin-top: -48px;
-`;
-
-const TotalVotes = styled.div`
-  font-size: 24px;
 `;
 
 
@@ -107,71 +83,25 @@ const PollPage = ({ match }) => {
       });
   };
 
-  const titleElement = poll ? (
-    <HeaderFlexRow>
-      <PageTitle>{poll.name}</PageTitle>
-      <TotalVotes>{`${poll.totalVotes} Votes`}</TotalVotes>
-    </HeaderFlexRow>
-  ) : (
-    <SkeletonTheme color="rgb(32, 73, 76)" highlightColor="rgb(47, 106, 111)">
-      <HeaderFlexRow>
-        <PageTitle><Skeleton width={400} /></PageTitle>
-        <TotalVotes><Skeleton width={100} /></TotalVotes>
-      </HeaderFlexRow>
-    </SkeletonTheme>
-  );
-
-  const formElement = poll ? (
-    <form onSubmit={submitVote}>
-      <PollForm
-        poll={poll}
-        selected={vote}
-        onChange={(e) => setVote(Number(e.target.value))}
-        showResults={hasVoted}
-      />
-      <FormButtons hide={hasVoted}>
-        <ResultsButton
-          type="button"
-          onClick={(e) => { e.preventDefault(); setHasVoted(true); }}
-          disabled={hasVoted}
-        >
-          Results
-        </ResultsButton>
-        <Button
-          type="submit"
-          disabled={vote === null || hasVoted}
-        >
-          Vote
-        </Button>
-      </FormButtons>
-      { /* Show vote message if not voted and there isn't a reponse */}
-      <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
-    </form>
-  ) : (
-    <>
-      <div>
-        <Skeleton width="100%" height={80} />
-      </div>
-      <div>
-        <Skeleton width="100%" height={80} />
-      </div>
-      <div>
-        <Skeleton width="100%" height={80} />
-      </div>
-    </>
-  );
-
   return (
     <>
       <PageHeader>
         <WidthParent>
-          {titleElement}
+          <PollHeader poll={poll} />
         </WidthParent>
       </PageHeader>
       <PollParent>
         <SkeletonTheme color="rgb(232, 232, 232)" highlightColor="rgb(218, 218, 218)">
           <VerticalList spacing="12">
-            {formElement}
+            <VoteForm
+              poll={poll}
+              submitVote={submitVote}
+              hasVoted={hasVoted}
+              vote={vote}
+              onChange={(e) => setVote(Number(e.target.value))}
+              onResults={(e) => { e.preventDefault(); setHasVoted(true); }}
+            />
+            <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
           </VerticalList>
         </SkeletonTheme>
       </PollParent>

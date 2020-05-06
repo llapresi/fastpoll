@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled/macro';
-import { VerticalList } from 'Utilities';
-import GraphBar from './GraphBar';
-
-const VoteButton = styled.input`
-  opacity:0;
-  position:absolute;
-`;
+import { GraphBar } from 'Components';
 
 const InputRow = styled.label`
   display: flex;
   position:relative;
+`;
+
+const VoteButton = styled.input`
+  opacity:0;
+  position:absolute;
 `;
 
 const PollInput = ({
@@ -61,45 +60,4 @@ PollInput.defaultProps = {
   showResults: true,
 };
 
-// Displays bar graph
-const PollForm = ({
-  selected, poll, onChange, showResults,
-}) => {
-  const { PollOptions, totalVotes } = poll;
-  // Wrapped in terniary to prevent rendering undefined polloptions
-  const optionList = PollOptions ? PollOptions.map((option, index) => (
-    <PollInput
-      option={option}
-      totalVotes={totalVotes}
-      onChange={onChange}
-      showResults={showResults}
-      checked={selected === option.id}
-      key={option.id}
-      delay={index * 0.04}
-    />
-  )) : <div />;
-  return (
-    <VerticalList spacing="12">
-      {optionList}
-    </VerticalList>
-  );
-};
-
-PollForm.propTypes = {
-  poll: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    totalVotes: PropTypes.number.isRequired,
-    id: PropTypes.number.isRequired,
-    PollOptions: PropTypes.array.isRequired,
-  }).isRequired,
-  onChange: PropTypes.func.isRequired,
-  showResults: PropTypes.bool,
-  selected: PropTypes.number,
-};
-
-PollForm.defaultProps = {
-  showResults: true,
-  selected: null,
-};
-
-export default PollForm;
+export default PollInput;
