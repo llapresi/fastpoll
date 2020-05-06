@@ -4,7 +4,6 @@ import PollList from './PollList';
 import { Button, SecondaryButton, LinkButton } from './Button';
 import Toolbar from './Toolbar';
 import { PageHeader, PageTitle, HeaderFlexRow } from './PageHeader';
-import AddPollOption from './AddPollOption';
 
 export {
   GraphBar,
@@ -17,5 +16,4 @@ export {
   PageHeader,
   PageTitle,
   HeaderFlexRow,
-  AddPollOption,
 };

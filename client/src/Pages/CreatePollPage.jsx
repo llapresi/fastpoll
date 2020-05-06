@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { CreatePollForm } from 'Components/CreatePoll';
+import { CreateForm } from 'Components/CreatePoll';
 import { handleErrors } from 'Utilities';
 
 
@@ -41,7 +41,7 @@ const CreatePollPage = () => {
 
   return (
     <>
-      <CreatePollForm onSubmit={onSubmit} />
+      <CreateForm onSubmit={onSubmit} />
       <div>
         {errorMessage}
       </div>

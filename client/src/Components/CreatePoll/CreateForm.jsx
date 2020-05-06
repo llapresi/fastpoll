@@ -6,40 +6,20 @@ import PropTypes from 'prop-types';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { BsFillExclamationCircleFill } from 'react-icons/bs';
 import {
-  VerticalList, SpaceBetweenRow, WidthParent,
+  VerticalList, WidthParent, Flex,
 } from 'Utilities';
 
 import {
-  Button, SecondaryButton, PageHeader, AddPollOption,
+  Button, SecondaryButton, PageHeader,
 } from 'Components';
 
-const NameTextbox = styled.input`
-  border: none;
-  display: inline;
-  font-family: inherit;
-  font-size: inherit;
-  padding: none;
-  font-size: 48px;
-  font-weight: 700;
-  background: rgb(57, 84, 87);
-  color: inherit;
-  width: 100%;
-
-  @media (max-width: 600px) {
-    font-size: 36px;
-  }
-  border: ${(props) => props.errorHighlight ? '2px #ff4545 solid' : '2px transparent solid'}
-`;
+import OptionList from './OptionList';
+import PollNameTextbox from './PollNameTextbox';
 
 const PollParent = styled(WidthParent)`
   background-color: white;
   padding: 18px;
   margin-top: -48px;
-`;
-
-const PollNameRow = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 const ErrorIcon = ({ msg }) => (
@@ -50,30 +30,7 @@ ErrorIcon.propTypes = {
   msg: PropTypes.string.isRequired,
 };
 
-const OptionList = ({
-  options, remove, errors, register,
-}) => (
-  <VerticalList spacing="12">
-    {options.map((item, index) => (
-      <AddPollOption
-        key={item.id}
-        index={index}
-        errors={errors}
-        register={register}
-        onRemove={() => remove(index)}
-      />
-    ))}
-  </VerticalList>
-);
-
-OptionList.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.object).isRequired,
-  remove: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired,
-  errors: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
-
-const CreatePollForm = ({ onSubmit }) => {
+const CreateForm = ({ onSubmit }) => {
   // Setup react-hook-form
   const {
     register, control, handleSubmit, errors,
@@ -97,8 +54,8 @@ const CreatePollForm = ({ onSubmit }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <PageHeader>
         <WidthParent>
-          <PollNameRow>
-            <NameTextbox
+          <Flex align="center">
+            <PollNameTextbox
               placeholder="New Poll Name:"
               type="text"
               name="name"
@@ -114,7 +71,7 @@ const CreatePollForm = ({ onSubmit }) => {
               })}
               errorHighlight={errors.name !== undefined}
             />
-          </PollNameRow>
+          </Flex>
           <p style={{
             color: '#ff4545', marginTop: '6px', marginBottom: '0px', visibility: errors.name !== undefined ? 'visible' : 'hidden',
           }}
@@ -126,18 +83,18 @@ const CreatePollForm = ({ onSubmit }) => {
       <PollParent>
         <VerticalList spacing="12">
           <OptionList options={fields} remove={remove} register={register} errors={errors} />
-          <SpaceBetweenRow>
+          <Flex align="center" justify="space-between">
             <SecondaryButton type="button" onClick={() => append({ name: '' })}>+ Add Option</SecondaryButton>
             <Button type="submit">Submit</Button>
-          </SpaceBetweenRow>
+          </Flex>
         </VerticalList>
       </PollParent>
     </form>
   );
 };
 
-CreatePollForm.propTypes = {
+CreateForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
-export default CreatePollForm;
+export default CreateForm;

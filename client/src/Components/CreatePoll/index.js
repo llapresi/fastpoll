@@ -1,5 +1,11 @@
-import CreatePollForm from './CreatePollForm';
+import CreateForm from './CreateForm';
+import OptionList from './OptionList';
+import AddOption from './AddOption';
+import PollNameTextbox from './PollNameTextbox';
 
 export {
-  CreatePollForm,
+  CreateForm,
+  OptionList,
+  AddOption,
+  PollNameTextbox,
 };
