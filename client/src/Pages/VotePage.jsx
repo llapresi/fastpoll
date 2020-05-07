@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import styled from '@emotion/styled';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { VerticalList, WidthParent } from 'Utilities';
 import { PageHeader } from 'Components';
 import { PollHeader, VoteForm } from 'Components/VotePoll';
-import PusherContext from 'Contexts/PusherContext';
-
-const getData = (url, callback) => {
-  fetch(url)
-    .then((res) => res.json())
-    .then((res) => callback(res));
-};
+import usePoll from 'Hooks/usePoll';
+import useHasVoted from 'Hooks/useHasVoted';
 
 const PollParent = styled(WidthParent)`
   background-color: white;
@@ -19,47 +14,15 @@ const PollParent = styled(WidthParent)`
   margin-top: -48px;
 `;
 
-
 const PollPage = ({ match }) => {
-  // Hold our fetched poll in use state and use useEffect to load on mount
-  const [poll, setPoll] = useState(null);
+  // Hook to store our currently selected vote
   const [vote, setVote] = useState(null);
-  // Use local storage to check if we voted for an option before
-  const [hasVoted, setHasVoted] = useState(
-    (localStorage.getItem(match.params.pollId) !== null) || false,
-  );
-  const [votedForText, setVotedForText] = useState(null);
-  const pusherContext = useContext(PusherContext);
-  const [subscribed, setSubscribed] = useState(false);
-
-  // Fetch our data on component mount
-  useEffect(() => {
-    // Intiial call for data
-    getData(`/api/polls/${match.params.pollId}`, setPoll);
-  }, []);
-
-  // Subscribe to our pusher channel when user votes
-  useEffect(() => {
-    if (hasVoted === true) {
-      const pusherChannel = pusherContext.subscribe(match.params.pollId);
-      setSubscribed(true);
-      pusherChannel.bind('voted', () => {
-        getData(`/api/polls/${match.params.pollId}`, setPoll);
-      });
-
-      // Set voted for message if it's in localStorage
-      if (localStorage.getItem(match.params.pollId) !== null) {
-        setVotedForText(localStorage.getItem(match.params.pollId));
-      }
-    }
-  }, [hasVoted]);
-
-  // Unsubscribe from our pusher channel when unmounting
-  useEffect(() => () => {
-    if (subscribed === true) {
-      pusherContext.unsubscribe(match.params.pollId);
-    }
-  }, []);
+  // Use hook to check if we voted for an option before
+  const [hasVoted, setHasVoted] = useHasVoted(match.params.pollId);
+  // Hook to store if we should show voting screen or results
+  const [showResults, setShowResults] = useState(false);
+  // Hook to get our poll data itself.
+  const [poll, setSubscription] = usePoll(match.params.pollId);
 
   // Submit poll vote
   const submitVote = (evt) => {
@@ -73,15 +36,21 @@ const PollPage = ({ match }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        setVotedForText(res);
-        setHasVoted(true);
-        localStorage.setItem(match.params.pollId, res);
-      })
-      .then(() => {
-        // Poll for our data after we get confirmation that we voted from server
-        getData(`/api/polls/${match.params.pollId}`, setPoll);
+        setHasVoted(res);
       });
   };
+
+  // Set if we should show the voting controls on load
+  useEffect(() => {
+    setShowResults(hasVoted !== false);
+  }, []);
+
+  // Subscribes to poll push channel when showing results
+  useEffect(() => {
+    if (showResults) {
+      setSubscription(true);
+    }
+  }, [showResults]);
 
   return (
     <>
@@ -96,12 +65,12 @@ const PollPage = ({ match }) => {
             <VoteForm
               poll={poll}
               submitVote={submitVote}
-              hasVoted={hasVoted}
+              hasVoted={showResults}
               vote={vote}
               onChange={(e) => setVote(Number(e.target.value))}
-              onResults={(e) => { e.preventDefault(); setHasVoted(true); }}
+              onResults={(e) => { e.preventDefault(); setShowResults(true); }}
             />
-            <div>{votedForText === null && !hasVoted ? null : votedForText}</div>
+            <div>{!hasVoted ? hasVoted : null}</div>
           </VerticalList>
         </SkeletonTheme>
       </PollParent>
