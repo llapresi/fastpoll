@@ -20,8 +20,10 @@ function usePoll(pollID) {
     getData(`/api/polls/${pollID}`, setPoll);
   }, []);
 
+  // Subscribe to pusher channel is subscription is set to true
   useEffect(() => {
     if (subscription === true) {
+      getData(`/api/polls/${pollID}`, setPoll);
       pusherChannel.bind('voted', () => {
         getData(`/api/polls/${pollID}`, setPoll);
       });

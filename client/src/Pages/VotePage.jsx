@@ -5,8 +5,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { VerticalList, WidthParent } from 'Utilities';
 import { PageHeader } from 'Components';
 import { PollHeader, VoteForm } from 'Components/VotePoll';
-import usePoll from 'Hooks/usePoll';
-import useHasVoted from 'Hooks/useHasVoted';
+import { usePoll, useHasVoted } from 'Hooks';
 
 const PollParent = styled(WidthParent)`
   background-color: white;
@@ -40,10 +39,10 @@ const PollPage = ({ match }) => {
       });
   };
 
-  // Set if we should show the voting controls on load
+  // Set if we should show the voting controls
   useEffect(() => {
     setShowResults(hasVoted !== false);
-  }, []);
+  }, [hasVoted]);
 
   // Subscribes to poll push channel when showing results
   useEffect(() => {
@@ -70,7 +69,7 @@ const PollPage = ({ match }) => {
               onChange={(e) => setVote(Number(e.target.value))}
               onResults={(e) => { e.preventDefault(); setShowResults(true); }}
             />
-            <div>{!hasVoted ? hasVoted : null}</div>
+            <div>{hasVoted !== false ? hasVoted : null}</div>
           </VerticalList>
         </SkeletonTheme>
       </PollParent>
